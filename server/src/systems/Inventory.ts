@@ -26,8 +26,8 @@ export function resolveItem(profile: Profile, uid: string): ItemRef | null {
  * the hotbar. Returns why an item can't be, or null if it can.
  */
 export function whyNotInInventory(profile: Profile, uid: string): string | null {
-  if (profile.pets.find((p) => p.uid === uid)?.equipped) return "Take it out of your pen first — only pets in your inventory can be sold or fused.";
-  if (profile.hotbar.includes(uid)) return "Take it off your hotbar first — only items in your inventory can be sold or fused.";
+  if (profile.pets.find((p) => p.uid === uid)?.equipped) return "Сначала убери мутанта из загона в рюкзак.";
+  if (profile.hotbar.includes(uid)) return "Сначала убери предмет с панели в рюкзак.";
   return null;
 }
 

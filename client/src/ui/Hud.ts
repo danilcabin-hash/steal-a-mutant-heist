@@ -75,28 +75,28 @@ export class Hud {
       <div class="hud">
         <div class="hud-status"></div>
         <div class="hud-left">
-          <button class="big-btn shop">🛒 Shop</button>
-          <button class="big-btn index">📘 Index</button>
-          <div class="slow-mode"><div class="toggle"><div class="knob"></div></div><span>Slow Mode</span></div>
+          <button class="big-btn shop">🛒 Магазин</button>
+          <button class="big-btn index">📘 Коллекция</button>
+          <div class="slow-mode"><div class="toggle"><div class="knob"></div></div><span>Медленный шаг</span></div>
         </div>
         <div class="hud-topbar">
-          <button class="tb-btn menu" title="Menu">☰</button>
-          <button class="tb-btn bag" title="Inventory (B)">🎒</button>
-          <button class="tb-btn controls" title="Controls (H)">❗</button>
-          <button class="tb-btn avatar" title="Customize your Bloxity avatar">👕</button>
-          ${CHEATS ? '<button class="tb-btn cheat" title="Cheats (debug)">🛠️</button>' : ""}
+          <button class="tb-btn menu" title="Меню">☰</button>
+          <button class="tb-btn bag" title="Рюкзак (B)">🎒</button>
+          <button class="tb-btn controls" title="Управление (H)">❗</button>
+          <button class="tb-btn avatar" title="Настроить аватар Bloxity">👕</button>
+          ${CHEATS ? '<button class="tb-btn cheat" title="Отладочные команды">🛠️</button>' : ""}
         </div>
         <div class="tb-menu panel" hidden>
-          <div class="tm-row"><b>Graphics</b><span class="tm-opts">
-            <button data-gfx="auto">Auto</button><button data-gfx="high">High</button><button data-gfx="low">Low</button>
+          <div class="tm-row"><b>Графика</b><span class="tm-opts">
+            <button data-gfx="auto">Авто</button><button data-gfx="high">Высокая</button><button data-gfx="low">Низкая</button>
           </span></div>
           <div class="tm-note"></div>
-          <div class="tm-row"><b>Sound</b><span class="tm-opts"><button data-sound="on">On</button><button data-sound="off">Off</button></span></div>
-          <button class="tm-help">Controls help (H)</button>
+          <div class="tm-row"><b>Звук</b><span class="tm-opts"><button data-sound="on">Вкл.</button><button data-sound="off">Выкл.</button></span></div>
+          <button class="tm-help">Как играть (H)</button>
         </div>
         <div class="hud-right">
-          <button class="sq-btn egg" title="Eggs">🥚</button>
-          <button class="sq-btn paw" title="Pets">🐾</button>
+          <button class="sq-btn egg" title="Капсулы">🥚</button>
+          <button class="sq-btn paw" title="Мутанты">🐾</button>
         </div>
         <div class="hud-stats">
           <div class="stat speed"><span class="icon">👟</span><span class="val">0</span></div>
@@ -104,13 +104,13 @@ export class Hud {
           <div class="stat gems"><span class="icon">💎</span><span class="val">0</span></div>
         </div>
         <div class="hud-timers">
-          <div class="timer boost" hidden title="x2 Speed boost"><span class="icon">⚡</span><span class="val"></span></div>
-          <div class="timer potion" title="Potion: claim it in the hub for x2 Speed-gain"><span class="icon">🧪</span><span class="val"></span></div>
-          <div class="timer night" title="Night: every biome seals off"><span class="icon">🌙</span><span class="val"></span></div>
+          <div class="timer boost" hidden title="Ускорение ×2"><span class="icon">⚡</span><span class="val"></span></div>
+          <div class="timer potion" title="Зелье на базе удваивает прирост скорости"><span class="icon">🧪</span><span class="val"></span></div>
+          <div class="timer night" title="Ночью биомы закрываются"><span class="icon">🌙</span><span class="val"></span></div>
         </div>
         <div class="hint" hidden></div>
-        <div class="night-banner" hidden>🌙 <b>Night has fallen</b> — biomes sealed off, eggs hatch <b>${WORLD_EVENTS.nightGrowMult}x</b> faster!</div>
-        <div class="offline-banner" hidden>💰 <b>Welcome back!</b> You earned <span class="amt"></span> while away.<button class="claim-btn">Claim</button></div>
+        <div class="night-banner" hidden>🌙 <b>Наступила ночь</b> · биомы закрыты, капсулы созревают в <b>${WORLD_EVENTS.nightGrowMult} раза быстрее!</b></div>
+        <div class="offline-banner" hidden>💰 <b>С возвращением!</b> Ты заработал <span class="amt"></span> за время отсутствия.<button class="claim-btn">Забрать</button></div>
         <div class="hotbar-wrap">
           <div class="hb-action" hidden></div>
           <div class="hotbar panel"></div>
@@ -118,7 +118,7 @@ export class Hud {
         <div class="overlay" hidden></div>
         <div class="player-list panel">
           <div class="pl-head">
-            <span data-key="name">People</span><span data-key="moneyPerSec">Money/s</span><span data-key="speed">Speed</span>
+            <span data-key="name">Игроки</span><span data-key="moneyPerSec">Доход/с</span><span data-key="speed">Скорость</span>
           </div>
           <div class="pl-rows"></div>
         </div>
@@ -126,21 +126,21 @@ export class Hud {
         ${
           CHEATS
             ? `<div class="cheat-panel panel" hidden>
-          <b>🛠️ Cheats <small>(debug)</small></b>
-          <div class="ch-row"><label>Speed</label><input class="ch-speed" placeholder="e.g. 9.1k, 170k, 2.5M" /><button data-cheat="setSpeed">Set</button></div>
+          <b>🛠️ Отладка</b>
+          <div class="ch-row"><label>Скорость</label><input class="ch-speed" placeholder="Например, 9.1k, 170k, 2.5M" /><button data-cheat="setSpeed">Задать</button></div>
           <div class="ch-quick"><button data-cheat="speed" data-v="1000">1K</button><button data-cheat="speed" data-v="100000">100K</button><button data-cheat="speed" data-v="10000000">10M</button><button data-cheat="speed" data-v="1000000000">1B</button><button data-cheat="speed" data-v="0">0</button></div>
-          <div class="ch-row"><label>Money</label><input class="ch-money" placeholder="e.g. 5M" /><button data-cheat="setMoney">Set</button></div>
+          <div class="ch-row"><label>Деньги</label><input class="ch-money" placeholder="Например, 5M" /><button data-cheat="setMoney">Задать</button></div>
           <div class="ch-quick"><button data-cheat="addMoney" data-v="1000000">+1M</button><button data-cheat="addMoney" data-v="1000000000">+1B</button></div>
-          <div class="ch-row"><label>Gems</label><input class="ch-gems" placeholder="e.g. 500" /><button data-cheat="setGems">Set</button></div>
-          <div class="ch-quick"><button data-cheat="night">🌗 Night / Day</button><button data-cheat="egg">🥚 Free egg</button><button data-cheat="grow">⏩ Grow eggs</button></div>
+          <div class="ch-row"><label>Кристаллы</label><input class="ch-gems" placeholder="Например, 500" /><button data-cheat="setGems">Задать</button></div>
+          <div class="ch-quick"><button data-cheat="night">🌗 Ночь / день</button><button data-cheat="egg">🥚 Выдать капсулу</button><button data-cheat="grow">⏩ Завершить инкубацию</button></div>
         </div>`
             : ""
         }
         <div class="help panel">
-          <b>Controls</b><br/>
-          ${isTouch ? "Left thumb: move · Right side drag: camera · ⬆: jump · Tap a hotbar slot to hold it, the action button to use it · Hold 👆 on an egg: steal" : "WASD / arrows: move · Space: jump · Hold E: steal egg · 1–0: hotbar · F: use held item · B: inventory · Drag mouse: camera · Wheel: zoom"}<br/>
-          ${isTouch ? "" : "Gamepad: stick move · A jump · X use · LB/RB hotbar · Y inventory<br/>C: Slow Mode · Tab: pets · F3: debug info · H: hide this help"}
-          ${!isTouch && import.meta.env.DEV ? "<br/><i>Dev: = ×10 Speed stat · - reset · J: free egg · G: finish growing eggs · N: toggle night/day · M: +$1M · K: +100 💎 · P: 3 Chicks · URL ?profile=name for a 2nd test player</i>" : ""}
+          <b>Управление</b><br/>
+          ${isTouch ? "Стик слева — ходьба · Свайп справа — обзор · ⬆ — прыжок · Нажми на ячейку, чтобы взять предмет · Удерживай 👆 у капсулы, чтобы украсть" : "WASD / стрелки — ходьба · Пробел — прыжок · Удерживай E для кражи · 1–0 — панель · F — использовать · B — рюкзак · Мышь — обзор · Колесо — масштаб"}<br/>
+          ${isTouch ? "" : "Геймпад: стик — ходьба · A — прыжок · X — действие · LB/RB — панель · Y — рюкзак<br/>C — медленный шаг · Tab — мутанты · F3 — отладка · H — скрыть справку"}
+          ${!isTouch && import.meta.env.DEV ? "<br/><i>Отладка: = — скорость ×10 · - — сброс · J — капсула · G — завершить инкубацию · N — ночь или день · M — +$1 млн · K — +100 💎 · P — три Сахура · ?profile=имя — второй профиль</i>" : ""}
         </div>
       </div>`,
     );
@@ -242,18 +242,18 @@ export class Hud {
   /** Countdown timers, reference style: "in 3m 9s", red in the last 15 s. */
   setTimers(nightIn: number, potionIn: number, isNight: boolean, potionAvailable: boolean) {
     for (const [el, secs] of [[this.nightEl, nightIn]] as const) {
-      el.textContent = `in ${formatDuration(secs)}`;
+      el.textContent = `через ${formatDuration(secs)}`;
       el.classList.toggle("soon", secs <= 15);
     }
     this.nightIcon.textContent = isNight ? "☀️" : "🌙";
-    this.nightRow.title = isNight ? "Day resumes and biomes reopen" : "Night: every biome seals off";
+    this.nightRow.title = isNight ? "На рассвете биомы откроются" : "Ночью биомы закрываются";
 
     this.potionEl.classList.toggle("ready", potionAvailable);
     if (potionAvailable) {
-      this.potionEl.textContent = "Ready!";
+      this.potionEl.textContent = "Готово!";
       this.potionEl.classList.remove("soon");
     } else {
-      this.potionEl.textContent = `in ${formatDuration(potionIn)}`;
+      this.potionEl.textContent = `через ${formatDuration(potionIn)}`;
       this.potionEl.classList.toggle("soon", potionIn <= 15);
     }
   }
@@ -289,7 +289,7 @@ export class Hud {
     if (el.textContent !== t) el.textContent = t;
   }
 
-  /** ⚡ timer while the x2 Speed boost runs (0 hides it). */
+  /** ⚡ timer while the Ускорение ×2 runs (0 hides it). */
   setBoost(secs: number) {
     const row = this.root.querySelector(".timer.boost") as HTMLElement;
     row.hidden = secs <= 0;
@@ -326,7 +326,7 @@ export class Hud {
 
   /** Full-screen message (disconnected / taken over). */
   showOverlay(title: string, text: string) {
-    this.overlayEl.innerHTML = `<div class="panel"><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p><button class="big-btn shop">Reload</button></div>`;
+    this.overlayEl.innerHTML = `<div class="panel"><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p><button class="big-btn shop">Перезагрузить</button></div>`;
     this.overlayEl.hidden = false;
     this.overlayEl.querySelector("button")!.addEventListener("click", () => location.reload());
   }
@@ -351,8 +351,8 @@ export class Hud {
   setDebug(fps: number, x: number, y: number, z: number, walkSpeed: number, perf?: { calls: number; tris: number; cpuMs: number }) {
     if (this.debugEl.hidden) return;
     const biome = biomeAt(z);
-    const p = perf ? ` · ${perf.calls} draws · ${(perf.tris / 1000).toFixed(0)}k tris · cpu ${perf.cpuMs.toFixed(1)} ms` : "";
-    this.debugEl.textContent = `FPS ${fps.toFixed(0)} · pos ${x.toFixed(1)}, ${y.toFixed(1)}, ${z.toFixed(1)} · ${biome ? biome.name : "Hub"} · walk ${walkSpeed.toFixed(1)} u/s${p}`;
+    const p = perf ? ` · ${perf.calls} вызовов · ${(perf.tris / 1000).toFixed(0)} тыс. треугольников · ЦП ${perf.cpuMs.toFixed(1)} мс` : "";
+    this.debugEl.textContent = `FPS ${fps.toFixed(0)} · координаты ${x.toFixed(1)}, ${y.toFixed(1)}, ${z.toFixed(1)} · ${biome ? biome.name : "База"} · скорость ${walkSpeed.toFixed(1)} ед./с${p}`;
   }
 
   setPlayers(rows: PlayerRow[]) {
@@ -374,7 +374,7 @@ export class Hud {
       .join("");
     for (const head of this.root.querySelectorAll<HTMLElement>(".pl-head [data-key]")) {
       head.classList.toggle("sorted", head.dataset.key === this.sortKey);
-      head.textContent = (head.dataset.key === this.sortKey ? (this.sortDesc ? "▼ " : "▲ ") : "") + (head.dataset.key === "name" ? "People" : head.dataset.key === "moneyPerSec" ? "Money/s" : "Speed");
+      head.textContent = (head.dataset.key === this.sortKey ? (this.sortDesc ? "▼ " : "▲ ") : "") + (head.dataset.key === "name" ? "Игроки" : head.dataset.key === "moneyPerSec" ? "Доход/с" : "Скорость");
     }
   }
 
@@ -383,7 +383,7 @@ export class Hud {
     for (const b of this.root.querySelectorAll<HTMLElement>(".tb-menu [data-gfx]")) b.classList.toggle("on", b.dataset.gfx === s.graphics);
     for (const b of this.root.querySelectorAll<HTMLElement>(".tb-menu [data-sound]")) b.classList.toggle("on", (b.dataset.sound === "on") === s.sound);
     (this.root.querySelector(".tb-menu .tm-note") as HTMLElement).textContent =
-      s.graphics === "auto" ? `Auto is using ${quality === "high" ? "High" : "Low"} on this device.` : quality === "low" ? "Low: no shadows and a shorter view — smoother on slow devices." : "";
+      s.graphics === "auto" ? `Автоматически выбрана ${quality === "high" ? "высокая" : "низкая"} графика.` : quality === "low" ? "Низкая графика отключает тени и уменьшает дальность обзора." : "";
   }
 
   /** Banner + Claim button shown once after joining if there's pending offline income (null hides it). */
@@ -410,9 +410,9 @@ export class Hud {
         const body = s
           ? `<span class="hb-icon" style="${s.color ? `--rc:${s.color}` : ""}">${s.icon}</span><span class="hb-name">${escapeHtml(s.name)}</span>${
               s.qty !== undefined ? `<span class="hb-count">x${s.qty}</span>` : ""
-            }<span class="hb-cd" data-kind="${s.kind}"></span>${arranging ? `<button class="hb-clear" data-slot="${i}" title="Back to inventory">✕</button>` : ""}`
+            }<span class="hb-cd" data-kind="${s.kind}"></span>${arranging ? `<button class="hb-clear" data-slot="${i}" title="Вернуть в рюкзак">✕</button>` : ""}`
           : "";
-        return `<div class="${cls}" data-slot="${i}" title="${s ? escapeHtml(s.name) : "Empty"}"><span class="hb-key">${(i + 1) % 10}</span>${body}</div>`;
+        return `<div class="${cls}" data-slot="${i}" title="${s ? escapeHtml(s.name) : "Пусто"}"><span class="hb-key">${(i + 1) % 10}</span>${body}</div>`;
       })
       .join("");
     this.tickCooldowns();
@@ -465,7 +465,7 @@ export interface HotbarSlotView {
 function formatDuration(secs: number) {
   const m = Math.floor(secs / 60);
   const s = secs % 60;
-  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+  return m > 0 ? `${m} мин ${s} с` : `${s} с`;
 }
 
 function escapeHtml(s: string) {

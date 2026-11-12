@@ -96,7 +96,7 @@ export class PenSystem {
     p.pets.clear();
     p.penEggs.clear();
     for (const pet of profile.pets) if (pet.equipped) this.showPet(p, pet);
-    // More equipped than slots (e.g. hand-edited save): bench the extras.
+    // More equipped than slots (Например, hand-edited save): bench the extras.
     while (this.used(profile) > this.slotsOf(profile)) {
       const extra = profile.pets.find((x) => x.equipped);
       if (!extra) break;
@@ -135,13 +135,13 @@ export class PenSystem {
     const index = profile.eggs.findIndex((e) => e.uid === p.equippedUid);
     if (index < 0) return this.changed(sessionId); // stale hand: resync
     // Growing eggs have their own room: a full set of active pets never stops you planting.
-    if (profile.penEggs.length >= this.slotsOf(profile)) return this.hooks.notify(sessionId, "Your pen has no room for more eggs — hatch one first.", "bad");
-    if (!inPen(p.baseIndex, p.x, p.z, PEN.inset, profile.penLevel)) return this.hooks.notify(sessionId, "Go to your pen to place it.", "bad");
+    if (profile.penEggs.length >= this.slotsOf(profile)) return this.hooks.notify(sessionId, "Загон заполнен. Сначала открой одну из капсул.", "bad");
+    if (!inPen(p.baseIndex, p.x, p.z, PEN.inset, profile.penLevel)) return this.hooks.notify(sessionId, "Чтобы поставить капсулу, войди в свой загон.", "bad");
 
     const plot = basePlot(p.baseIndex);
     const dx = p.x - plot.cx;
     const dz = p.z - plot.cz;
-    if (!this.spotFree(profile, dx, dz)) return this.hooks.notify(sessionId, "Too close to another egg.", "bad");
+    if (!this.spotFree(profile, dx, dz)) return this.hooks.notify(sessionId, "Слишком близко к другой капсуле.", "bad");
 
     const [owned] = profile.eggs.splice(index, 1);
     const now = this.now();
@@ -167,7 +167,7 @@ export class PenSystem {
     if (!o) return;
     const { p, profile } = o;
     if (p.equipped !== "pet") return;
-    if (!inPen(p.baseIndex, p.x, p.z, PEN.inset, profile.penLevel)) return this.hooks.notify(sessionId, "Go to your pen to place it.", "bad");
+    if (!inPen(p.baseIndex, p.x, p.z, PEN.inset, profile.penLevel)) return this.hooks.notify(sessionId, "Чтобы поставить капсулу, войди в свой загон.", "bad");
     this.equip(sessionId, p.equippedUid, true);
   }
 
@@ -194,7 +194,7 @@ export class PenSystem {
     if (target === undefined) {
       if (profile.hotbar.includes(uid)) return;
       target = profile.hotbar.indexOf("");
-      if (target < 0) return this.hooks.notify(sessionId, "Your hotbar is full — take something out first.", "bad");
+      if (target < 0) return this.hooks.notify(sessionId, "На панели нет места. Освободи ячейку.", "bad");
     }
     if (!Number.isInteger(target) || target < 0 || target >= HOTBAR_SIZE) return;
     profile.hotbar = profile.hotbar.map((x) => (x === uid ? "" : x));
@@ -245,7 +245,7 @@ export class PenSystem {
     const i = profile.penEggs.findIndex((e) => e.uid === eggUid);
     if (i < 0) return;
     const egg = profile.penEggs[i];
-    if (egg.readyAt > this.now()) return this.hooks.notify(sessionId, "That egg isn't ready yet.", "bad");
+    if (egg.readyAt > this.now()) return this.hooks.notify(sessionId, "Капсула ещё не готова.", "bad");
 
     profile.penEggs.splice(i, 1);
     p.penEggs.delete(egg.uid);
@@ -274,7 +274,7 @@ export class PenSystem {
     const { p, profile } = o;
     const pet = profile.pets.find((x) => x.uid === petUid);
     if (!pet || pet.equipped === on) return;
-    if (on && this.used(profile) >= this.slotsOf(profile)) return this.hooks.notify(sessionId, "Your pen is full! Buy a slot or take a pet out.", "bad");
+    if (on && this.used(profile) >= this.slotsOf(profile)) return this.hooks.notify(sessionId, "Загон заполнен. Купи место или убери одного мутанта.", "bad");
     pet.equipped = on;
     if (on) this.showPet(p, pet);
     else p.pets.delete(pet.uid);
@@ -304,13 +304,13 @@ export class PenSystem {
     const o = this.owners.get(sessionId);
     if (!o) return;
     const { p, profile } = o;
-    if (profile.penSlots >= PEN.maxSlots) return this.hooks.notify(sessionId, "Your pen is already as big as it gets.", "bad");
+    if (profile.penSlots >= PEN.maxSlots) return this.hooks.notify(sessionId, "У загона уже максимальный размер.", "bad");
     const cost = slotCost(profile.penSlots);
-    if (p.money < cost) return this.hooks.notify(sessionId, "Not enough money for another slot.", "bad");
+    if (p.money < cost) return this.hooks.notify(sessionId, "Не хватает денег на дополнительное место.", "bad");
     p.money -= cost;
     profile.penSlots++;
     p.penSlots = this.slotsOf(profile);
-    this.hooks.notify(sessionId, `Pen slot unlocked! (${this.slotsOf(profile)} slots)`, "good");
+    this.hooks.notify(sessionId, `Открыто место в загоне! Всего мест: ${this.slotsOf(profile)}`, "good");
     this.changed(sessionId);
   }
 
@@ -332,7 +332,7 @@ export class PenSystem {
     o.profile.eggs.push({ uid: eggUid, defId: def.id, size: +(EGG_SIZE.min + Math.random() * (EGG_SIZE.max - EGG_SIZE.min)).toFixed(2), obtainedAt: this.now() });
     stash(o.profile, eggUid);
     o.p.eggCount = o.profile.eggs.length;
-    this.hooks.notify(sessionId, `Dev: ${def.name} added to your backpack`, "info");
+    this.hooks.notify(sessionId, `Отладка: «${def.name}» в рюкзаке`, "info");
     this.changed(sessionId);
   }
 
@@ -418,7 +418,7 @@ export class PenSystem {
     if (!o) return;
     const { p, profile } = o;
     const spot = useSpot(HUB_BUILDINGS.sell);
-    if (!this.near(p, spot.x, spot.z)) return this.hooks.notify(sessionId, "Go to the SELL stall to sell.", "bad");
+    if (!this.near(p, spot.x, spot.z)) return this.hooks.notify(sessionId, "Подойди к лавке продажи.", "bad");
     if (!Array.isArray(uids) || uids.length === 0 || uids.length > 200 || new Set(uids).size !== uids.length) return;
     const pets: OwnedPet[] = [];
     const eggs: OwnedEgg[] = [];
@@ -439,7 +439,7 @@ export class PenSystem {
     p.eggCount = profile.eggs.length;
     p.money += total;
     const what = [pets.length && `${pets.length} pet${pets.length === 1 ? "" : "s"}`, eggs.length && `${eggs.length} egg${eggs.length === 1 ? "" : "s"}`].filter(Boolean).join(" and ");
-    this.hooks.notify(sessionId, `Sold ${what} for $${formatShort(total)}!`, "good");
+    this.hooks.notify(sessionId, `Продано: ${what}. Получено: $${formatShort(total)}.`, "good");
     this.changed(sessionId);
   }
 
@@ -453,21 +453,21 @@ export class PenSystem {
     if (!o) return;
     const { p, profile } = o;
     const spot = useSpot(HUB_BUILDINGS.fuse);
-    if (!this.near(p, spot.x, spot.z)) return this.hooks.notify(sessionId, "Go to the Fuse Machine to fuse pets.", "bad");
+    if (!this.near(p, spot.x, spot.z)) return this.hooks.notify(sessionId, "Подойди к аппарату слияния.", "bad");
     // Exactly 3 distinct pets that are yours.
     const pets = this.ownPets(profile, uids, FUSE.inputs);
-    if (!pets || pets.length !== FUSE.inputs) return this.hooks.notify(sessionId, `Pick ${FUSE.inputs} pets to fuse.`, "bad");
+    if (!pets || pets.length !== FUSE.inputs) return this.hooks.notify(sessionId, `Выбери мутантов для слияния: ${FUSE.inputs}.`, "bad");
     for (const x of pets) {
       const why = whyNotInInventory(profile, x.uid);
       if (why) return this.hooks.notify(sessionId, why, "bad");
     }
     const species = pets[0].species;
-    if (!pets.every((x) => x.species === species)) return this.hooks.notify(sessionId, "All three must be the same pet.", "bad");
+    if (!pets.every((x) => x.species === species)) return this.hooks.notify(sessionId, "Нужны три мутанта одного вида.", "bad");
     const def = PET_BY_ID.get(species);
     const eggDef = EGG_BY_ID.get(fusedEggId(species));
-    if (!def || !eggDef) return this.hooks.notify(sessionId, "Those pets can't be fused.", "bad");
+    if (!def || !eggDef) return this.hooks.notify(sessionId, "Этих мутантов нельзя объединить.", "bad");
     const fee = fusionFee(species);
-    if (p.money < fee) return this.hooks.notify(sessionId, `You don't have enough money to fuse these pets ($${formatShort(fee)}).`, "bad");
+    if (p.money < fee) return this.hooks.notify(sessionId, `Не хватает денег для слияния ($${formatShort(fee)}).`, "bad");
     // (The inventory has no size cap, so there's always room for the egg.)
 
     // All checks passed: consume, charge, and make the egg.
@@ -485,7 +485,7 @@ export class PenSystem {
     const slot = profile.hotbar.indexOf(egg.uid);
     this.hooks.notify(
       sessionId,
-      slot >= 0 ? `Fusion complete! ${eggDef.name} added to hotbar slot ${(slot + 1) % 10}.` : `Fusion complete! Hotbar full — ${eggDef.name} added to your inventory.`,
+      slot >= 0 ? `Слияние завершено! «${eggDef.name}» в ячейке ${(slot + 1) % 10}.` : `Слияние завершено! Панель заполнена, «${eggDef.name}» в рюкзаке.`,
       "good",
     );
     this.hooks.fused(sessionId, { uid: egg.uid, defId: egg.defId, slot });

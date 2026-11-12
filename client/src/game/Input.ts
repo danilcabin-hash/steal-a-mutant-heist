@@ -1,9 +1,9 @@
 /** Use-button look per held item kind (touch). */
 const USE_BUTTON: Record<string, { icon: string; label: string }> = {
-  bat: { icon: "🗡️", label: "Swing" },
-  trap: { icon: "🪤", label: "Place" },
-  egg: { icon: "✋", label: "Place" },
-  pet: { icon: "✋", label: "Place" },
+  bat: { icon: "🗡️", label: "Удар" },
+  trap: { icon: "🪤", label: "Поставить" },
+  egg: { icon: "✋", label: "Поставить" },
+  pet: { icon: "✋", label: "Поставить" },
 };
 
 /** Standard-mapping gamepad buttons → the key codes the game already listens for. */

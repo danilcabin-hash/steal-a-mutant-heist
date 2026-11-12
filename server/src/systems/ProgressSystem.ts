@@ -48,14 +48,14 @@ export class ProgressSystem {
     if (!o) return;
     const { p, profile } = o;
     const plot = basePlot(p.baseIndex);
-    if (Math.hypot(p.x - plot.treadmillSign.x, p.z - plot.treadmillSign.z) > USE_RANGE) return this.hooks.notify(sessionId, "Go to your treadmill's Upgrade sign.", "bad");
-    if (profile.treadmillLevel >= TREADMILL.levels.length) return this.hooks.notify(sessionId, "Your treadmill is maxed out!", "bad");
+    if (Math.hypot(p.x - plot.treadmillSign.x, p.z - plot.treadmillSign.z) > USE_RANGE) return this.hooks.notify(sessionId, "Подойди к табличке улучшения беговой дорожки.", "bad");
+    if (profile.treadmillLevel >= TREADMILL.levels.length) return this.hooks.notify(sessionId, "Дорожка улучшена до предела!", "bad");
     const next = treadmillLevel(profile.treadmillLevel + 1);
-    if (p.money < next.cost) return this.hooks.notify(sessionId, `You need $${formatShort(next.cost)}.`, "bad");
+    if (p.money < next.cost) return this.hooks.notify(sessionId, `Требуется $${formatShort(next.cost)}.`, "bad");
     p.money -= next.cost;
     profile.treadmillLevel = next.level;
     p.treadmillLevel = next.level;
-    this.hooks.notify(sessionId, `Treadmill upgraded to Level ${next.level}! (+${next.gainPerStep}/step)`, "good");
+    this.hooks.notify(sessionId, `Дорожка улучшена до уровня ${next.level}! (+${next.gainPerStep} за шаг)`, "good");
     this.pens.changed(sessionId);
   }
 
@@ -64,13 +64,13 @@ export class ProgressSystem {
     if (!o) return;
     const { p, profile } = o;
     const plot = basePlot(p.baseIndex);
-    if (Math.hypot(p.x - plot.penSign.x, p.z - plot.penSign.z) > USE_RANGE) return this.hooks.notify(sessionId, "Go to your pen's Upgrade sign.", "bad");
-    if (profile.penLevel >= PEN_LEVELS.length) return this.hooks.notify(sessionId, "Your pen is maxed out!", "bad");
+    if (Math.hypot(p.x - plot.penSign.x, p.z - plot.penSign.z) > USE_RANGE) return this.hooks.notify(sessionId, "Подойди к табличке улучшения загона.", "bad");
+    if (profile.penLevel >= PEN_LEVELS.length) return this.hooks.notify(sessionId, "Загон улучшен до предела!", "bad");
     const next = PEN_LEVELS[profile.penLevel];
-    if (p.money < next.cost) return this.hooks.notify(sessionId, `You need $${formatShort(next.cost)}.`, "bad");
+    if (p.money < next.cost) return this.hooks.notify(sessionId, `Требуется $${formatShort(next.cost)}.`, "bad");
     p.money -= next.cost;
     profile.penLevel = next.level;
-    this.hooks.notify(sessionId, `${next.name}! Pets now earn +${Math.round(next.incomeBonus * 100)}%.`, "good");
+    this.hooks.notify(sessionId, `${next.name}! Доход мутантов вырос на ${Math.round(next.incomeBonus * 100)}%.`, "good");
     this.pens.refresh(sessionId);
   }
 
@@ -82,13 +82,13 @@ export class ProgressSystem {
     if (!o || !trail) return;
     const { p, profile } = o;
     const spot = useSpot(HUB_BUILDINGS.trails);
-    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.hooks.notify(sessionId, "Go to the Trails Shop.", "bad");
+    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.hooks.notify(sessionId, "Подойди к магазину следов.", "bad");
     if (profile.trailsOwned.includes(trail.id)) return this.equipTrail(sessionId, trail.id);
-    if (p.money < trail.price) return this.hooks.notify(sessionId, `You need $${formatShort(trail.price)}.`, "bad");
+    if (p.money < trail.price) return this.hooks.notify(sessionId, `Требуется $${formatShort(trail.price)}.`, "bad");
     p.money -= trail.price;
     profile.trailsOwned.push(trail.id);
     profile.trail = trail.id;
-    this.hooks.notify(sessionId, `${trail.name} equipped! x${trail.speedMult} speed`, "good");
+    this.hooks.notify(sessionId, `${trail.name} выбран! Скорость ×${trail.speedMult}`, "good");
     this.pens.refresh(sessionId);
   }
 
@@ -103,7 +103,7 @@ export class ProgressSystem {
 
   // ------------------------------------------------------------------ world events
 
-  /** Grants a temporary x2 Speed-gain boost free of Gems (e.g. from the potion pickup), stacking onto any boost already running. */
+  /** Grants a temporary x2 Speed-gain boost free of Gems (Например, from the potion pickup), stacking onto any boost already running. */
   grantSpeedBoost(sessionId: string, minutes: number) {
     const o = this.pens.owner(sessionId);
     if (!o) return;
@@ -121,8 +121,8 @@ export class ProgressSystem {
     if (msg.item === "featured") {
       const bundle = FEATURED.bundles.find((b) => b.count === msg.count);
       if (!bundle) return;
-      if (this.now() > FEATURED.endsAt) return this.hooks.notify(sessionId, "That event has ended.", "bad");
-      if (profile.gems < bundle.gems) return this.hooks.notify(sessionId, `You need ${bundle.gems} 💎.`, "bad");
+      if (this.now() > FEATURED.endsAt) return this.hooks.notify(sessionId, "Акция закончилась.", "bad");
+      if (profile.gems < bundle.gems) return this.hooks.notify(sessionId, `Требуется ${bundle.gems} 💎.`, "bad");
       profile.gems -= bundle.gems;
       const def = EGG_BY_ID.get(FEATURED.eggId)!;
       for (let i = 0; i < bundle.count; i++) {
@@ -131,24 +131,24 @@ export class ProgressSystem {
         stash(profile, uid);
       }
       p.eggCount = profile.eggs.length;
-      this.hooks.notify(sessionId, `${bundle.count}× ${def.name} added to your backpack!`, "good");
+      this.hooks.notify(sessionId, `${bundle.count}× ${def.name} теперь в рюкзаке!`, "good");
       return this.pens.changed(sessionId);
     }
 
     const item = SHOP_BY_ID.get(msg.item);
     if (!item) return;
     if (item.cash) {
-      if (p.money < item.cash) return this.hooks.notify(sessionId, `You need ${formatShort(item.cash)}.`, "bad");
+      if (p.money < item.cash) return this.hooks.notify(sessionId, `Требуется ${formatShort(item.cash)}.`, "bad");
       p.money -= item.cash;
     } else {
-      if (profile.gems < item.gems) return this.hooks.notify(sessionId, `You need ${item.gems} 💎.`, "bad");
+      if (profile.gems < item.gems) return this.hooks.notify(sessionId, `Требуется ${item.gems} 💎.`, "bad");
       profile.gems -= item.gems;
     }
     if (item.speedBoostMin) profile.boostUntil = Math.max(profile.boostUntil, this.now()) + item.speedBoostMin * 60_000;
     if (item.speed) p.speedStat += item.speed;
     if (item.money) p.money += Math.max(item.money.flat, Math.round(p.income * item.money.incomeSeconds));
     if (item.tool) grantTool(profile, item.tool.kind, item.tool.qty, this.now());
-    this.hooks.notify(sessionId, `Bought ${item.title}!`, "good");
+    this.hooks.notify(sessionId, `Покупка: ${item.title}!`, "good");
     this.pens.changed(sessionId);
   }
 
@@ -178,7 +178,7 @@ export class ProgressSystem {
     }
     p.money += money;
     p.speedStat += speed;
-    let text = `Index reward: +$${formatShort(money)} and +${formatShort(speed)} Speed!`;
+    let text = `Награда коллекции: +$${formatShort(money)} и +${formatShort(speed)} к скорости!`;
 
     // Completed a whole page (every pet of a biome discovered)?
     for (const biome of new Set(PETS.map((x) => x.biome))) {
@@ -187,7 +187,7 @@ export class ProgressSystem {
       profile.completed.push(biome);
       profile.gems += INDEX_COMPLETE_REWARD.gems;
       profile.penSlots = Math.min(PEN.maxSlots, profile.penSlots + INDEX_COMPLETE_REWARD.slots);
-      text += ` Page complete: +${INDEX_COMPLETE_REWARD.gems} 💎 and +1 pen slot!`;
+      text += ` Страница собрана: +${INDEX_COMPLETE_REWARD.gems} 💎 и +1 место в загоне!`;
     }
     this.hooks.notify(sessionId, text, "good");
     this.pens.refresh(sessionId);

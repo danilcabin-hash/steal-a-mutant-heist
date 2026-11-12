@@ -21,11 +21,11 @@ export interface PenLevel {
 
 /** Reference: a new pen is white; upgrading turns it wooden. We keep going from there. */
 export const PEN_LEVELS: PenLevel[] = [
-  { level: 1, name: "White Fence", rail: "#f4f4f6", post: "#4b4550", incomeBonus: 0, cost: 0 },
-  { level: 2, name: "Wooden Fence", rail: "#b86b2e", post: "#5a3a22", incomeBonus: 0.1, cost: 2_500 },
-  { level: 3, name: "Stone Fence", rail: "#9aa0ab", post: "#4a4f5a", incomeBonus: 0.25, cost: 60_000 },
-  { level: 4, name: "Gold Fence", rail: "#ffc21f", post: "#8a6a10", incomeBonus: 0.5, cost: 1_500_000 },
-  { level: 5, name: "Diamond Fence", rail: "#7fe8ff", post: "#2a6f9a", incomeBonus: 1, cost: 40_000_000 },
+  { level: 1, name: "Белая ограда", rail: "#f4f4f6", post: "#4b4550", incomeBonus: 0, cost: 0 },
+  { level: 2, name: "Деревянная ограда", rail: "#b86b2e", post: "#5a3a22", incomeBonus: 0.1, cost: 2_500 },
+  { level: 3, name: "Каменная ограда", rail: "#9aa0ab", post: "#4a4f5a", incomeBonus: 0.25, cost: 60_000 },
+  { level: 4, name: "Золотая ограда", rail: "#ffc21f", post: "#8a6a10", incomeBonus: 0.5, cost: 1_500_000 },
+  { level: 5, name: "Алмазная ограда", rail: "#7fe8ff", post: "#2a6f9a", incomeBonus: 1, cost: 40_000_000 },
 ];
 
 export function penLevel(level: number): PenLevel {
@@ -46,12 +46,12 @@ export interface TrailDef {
 }
 
 export const TRAILS: TrailDef[] = [
-  { id: "grey", name: "Grey Trail", rarity: "Common", speedMult: 1.1, color: "#c9ccd3", price: 2_000 },
-  { id: "green", name: "Green Trail", rarity: "Uncommon", speedMult: 1.2, color: "#5ee04a", price: 20_000 },
-  { id: "blue", name: "Blue Trail", rarity: "Rare", speedMult: 1.35, color: "#2f9bff", price: 250_000 },
-  { id: "purple", name: "Purple Trail", rarity: "Epic", speedMult: 1.5, color: "#c04dff", price: 3_000_000 },
-  { id: "fire", name: "Fire Trail", rarity: "Legendary", speedMult: 1.75, color: "#ff7a1a", price: 50_000_000 },
-  { id: "rainbow", name: "Rainbow Trail", rarity: "Mythic", speedMult: 2, color: "#ff5ec8", price: 1_000_000_000 },
+  { id: "grey", name: "Серый след", rarity: "Common", speedMult: 1.1, color: "#c9ccd3", price: 2_000 },
+  { id: "green", name: "Зелёный след", rarity: "Uncommon", speedMult: 1.2, color: "#5ee04a", price: 20_000 },
+  { id: "blue", name: "Синий след", rarity: "Rare", speedMult: 1.35, color: "#2f9bff", price: 250_000 },
+  { id: "purple", name: "Фиолетовый след", rarity: "Epic", speedMult: 1.5, color: "#c04dff", price: 3_000_000 },
+  { id: "fire", name: "Огненный след", rarity: "Legendary", speedMult: 1.75, color: "#ff7a1a", price: 50_000_000 },
+  { id: "rainbow", name: "Радужный след", rarity: "Mythic", speedMult: 2, color: "#ff5ec8", price: 1_000_000_000 },
 ];
 
 export const TRAIL_BY_ID = new Map(TRAILS.map((t) => [t.id, t]));
@@ -181,15 +181,15 @@ export interface ShopItem {
 }
 
 export const SHOP_ITEMS: ShopItem[] = [
-  { id: "boost10", tab: "speed", title: "x2 Speed (10 min)", desc: "Double Speed from your treadmill for 10 minutes.", icon: "⚡", gems: 15, speedBoostMin: 10 },
-  { id: "boost60", tab: "speed", title: "x2 Speed (1 hour)", desc: "Double Speed from your treadmill for an hour.", icon: "⚡", gems: 60, speedBoostMin: 60 },
-  { id: "speed5k", tab: "speed", title: "+5K Speed", desc: "An instant Speed boost.", icon: "👟", gems: 20, speed: 5_000 },
-  { id: "cash1", tab: "money", title: "Pile of Cash", desc: "$10K, or 10 minutes of your income if that's more.", icon: "💵", gems: 20, money: { flat: 10_000, incomeSeconds: 600 } },
-  { id: "cash2", tab: "money", title: "Bag of Cash", desc: "$100K, or 1 hour of your income if that's more.", icon: "💰", gems: 90, money: { flat: 100_000, incomeSeconds: 3_600 } },
-  { id: "cash3", tab: "money", title: "Vault of Cash", desc: "$1M, or 8 hours of your income if that's more.", icon: "🏦", gems: 400, money: { flat: 1_000_000, incomeSeconds: 28_800 } },
-  { id: "bat", tab: "gear", title: "Sword", desc: "Knock an egg out of a thief's hands (or daze a guardian).", icon: "🗡️", gems: 25, tool: { kind: "bat", qty: 1 } },
-  { id: "trap3", tab: "gear", title: "Bear Traps x3", desc: "Place in a biome: whoever steps in is stuck and drops their egg.", icon: "🪤", gems: 0, cash: 1_000, tool: { kind: "trap", qty: 3 } },
-  { id: "trap10", tab: "gear", title: "Bear Traps x10", desc: "A big stack of traps.", icon: "🪤", gems: 0, cash: 3_000, tool: { kind: "trap", qty: 10 } },
+  { id: "boost10", tab: "speed", title: "Скорость ×2 (10 мин)", desc: "Дорожка даёт вдвое больше скорости 10 минут.", icon: "⚡", gems: 15, speedBoostMin: 10 },
+  { id: "boost60", tab: "speed", title: "Скорость ×2 (1 час)", desc: "Дорожка даёт вдвое больше скорости один час.", icon: "⚡", gems: 60, speedBoostMin: 60 },
+  { id: "speed5k", tab: "speed", title: "+5 тыс. скорости", desc: "Мгновенная прибавка к скорости.", icon: "👟", gems: 20, speed: 5_000 },
+  { id: "cash1", tab: "money", title: "Стопка денег", desc: "10 тыс. монет или твой доход за 10 минут, если он выше.", icon: "💵", gems: 20, money: { flat: 10_000, incomeSeconds: 600 } },
+  { id: "cash2", tab: "money", title: "Мешок денег", desc: "100 тыс. монет или твой доход за час, если он выше.", icon: "💰", gems: 90, money: { flat: 100_000, incomeSeconds: 3_600 } },
+  { id: "cash3", tab: "money", title: "Хранилище денег", desc: "1 млн монет или твой доход за 8 часов, если он выше.", icon: "🏦", gems: 400, money: { flat: 1_000_000, incomeSeconds: 28_800 } },
+  { id: "bat", tab: "gear", title: "Меч", desc: "Выбивает капсулу из рук вора или оглушает охранника.", icon: "🗡️", gems: 25, tool: { kind: "bat", qty: 1 } },
+  { id: "trap3", tab: "gear", title: "Капканы ×3", desc: "Поставь в биоме. Тот, кто наступит, застрянет и уронит капсулу.", icon: "🪤", gems: 0, cash: 1_000, tool: { kind: "trap", qty: 3 } },
+  { id: "trap10", tab: "gear", title: "Капканы ×10", desc: "Большой набор капканов.", icon: "🪤", gems: 0, cash: 3_000, tool: { kind: "trap", qty: 10 } },
 ];
 
 export const SHOP_BY_ID = new Map(SHOP_ITEMS.map((s) => [s.id, s]));

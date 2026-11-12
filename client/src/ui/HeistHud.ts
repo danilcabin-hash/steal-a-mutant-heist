@@ -24,8 +24,8 @@ export class HeistHud {
     root.insertAdjacentHTML(
       "beforeend",
       `<div class="vignette" hidden></div>
-       <div class="run-banner" hidden><div class="run-title">RUN!!</div><div class="run-sub"></div></div>
-       <button class="drop-btn" hidden>🗑️ Drop</button>
+       <div class="run-banner" hidden><div class="run-title">БЕГИ!</div><div class="run-sub"></div></div>
+       <button class="drop-btn" hidden>🗑️ Бросить</button>
        <div class="steal-prompt" hidden>
          <div class="key"><div class="ring"></div><span>${isTouch ? "👆" : "E"}</span></div>
          <div class="txt"><div class="name"></div><div class="action"></div></div>
@@ -57,7 +57,7 @@ export class HeistHud {
   }
 
   /** Shows the prompt at a screen position (or hides it when `info` is null). `progress` 0..1. */
-  setPrompt(info: { title: string; color: string } | null, x = 0, y = 0, progress = 0, action = "Steal") {
+  setPrompt(info: { title: string; color: string } | null, x = 0, y = 0, progress = 0, action = "Украсть") {
     this.prompt.hidden = !info;
     if (!info) return;
     this.prompt.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;

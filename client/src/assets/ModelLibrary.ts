@@ -76,18 +76,18 @@ export class ModelLibrary {
     try {
       if (data) {
         obj = await this.parseFile(data.buffer, data.fileName, entry);
-        this.status.set(id, { source: "file", message: `${data.fileName} (preview, not saved)` });
+        this.status.set(id, { source: "file", message: `${data.fileName} (предпросмотр)` });
       } else if (entry.file) {
         obj = await this.loadFile(entry.file, entry);
         this.status.set(id, { source: "file", message: entry.file });
       } else {
         obj = makePlaceholder(id);
-        this.status.set(id, { source: "placeholder", message: "no file set, using placeholder" });
+        this.status.set(id, { source: "placeholder", message: "Используется встроенная модель" });
       }
     } catch (err) {
       console.warn(`[models] ${id}: failed to load, using placeholder`, err);
       obj = makePlaceholder(id);
-      this.status.set(id, { source: "fallback", message: `load failed: ${(err as Error).message ?? err}` });
+      this.status.set(id, { source: "fallback", message: `Ошибка загрузки: ${(err as Error).message ?? err}` });
     }
     obj.traverse((o) => {
       if ((o as THREE.Mesh).isMesh) {

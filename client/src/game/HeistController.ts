@@ -144,19 +144,19 @@ export class HeistController {
       this.ctx.me.knock(m.vx, m.vy, m.vz, m.stunMs);
       this.ctx.shake(1.2);
       sfx.hit();
-      const eggPart = m.droppedEgg ? " You dropped your egg." : "";
+      const eggPart = m.droppedEgg ? " Капсула выпала." : "";
       const text =
         m.kind === "trap"
-          ? (m.by ? `Caught in ${m.by}'s trap!` : "Caught in a trap!") + eggPart
+          ? (m.by ? `Ты попал в капкан игрока ${m.by}!` : "Ты попал в капкан!") + eggPart
           : m.by
-            ? `${m.by} slashed you with a sword!${eggPart}`
-            : "You got caught and dropped the egg!";
+            ? `${m.by} ударил тебя мечом!${eggPart}`
+            : "Тебя поймали, и капсула выпала!";
       this.ctx.heistHud.toast(text, "bad");
     });
     room.onMessage(MSG.Secured, (m: SecuredMsg) => {
       const def = EGG_BY_ID.get(m.defId);
       sfx.secured();
-      this.ctx.heistHud.toast(`${def?.name ?? "Egg"} secured! You have ${m.total} egg${m.total === 1 ? "" : "s"}.`, "good", 3500);
+      this.ctx.heistHud.toast(`«${def?.name ?? "Капсула"}» на базе! Капсул в рюкзаке: ${m.total}.`, "good", 3500);
     });
     room.onMessage(MSG.Notify, (m: NotifyMsg) => {
       if (m.kind === "bad") sfx.deny();
@@ -219,8 +219,8 @@ export class HeistController {
     }
     const toSafety = Math.max(0, me.pos.z - SAFE_ZONE_Z);
     const sub = Number.isFinite(nearest)
-      ? `Guardian ${Math.round(nearest)}m behind · Safe zone ${Math.round(toSafety)}m`
-      : `Get back past the SAFE ZONE! (${Math.round(toSafety)}m)`;
+      ? `До охранника ${Math.round(nearest)} м · До базы ${Math.round(toSafety)} м`
+      : `Беги в безопасную зону! (${Math.round(toSafety)} м)`;
     heistHud.setCarrying(true, sub, Number.isFinite(nearest) ? Math.max(0, 1 - nearest / 25) : 0);
   }
 
@@ -238,7 +238,7 @@ export class HeistController {
         key: id,
         title: entity.def.name,
         titleColor: RARITY_COLOR[entity.def.rarity],
-        action: view.state === EggStatus.Loose ? "Grab" : "Steal",
+        action: view.state === EggStatus.Loose ? "Подобрать" : "Украсть",
         at,
         dist,
         holdSec: EGG_RULES.stealHoldSec,

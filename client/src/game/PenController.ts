@@ -242,7 +242,7 @@ export class PenController {
         key: `hatch:${uid}`,
         title: `${egg.def.name}`,
         titleColor: RARITY_COLOR[egg.def.rarity],
-        action: "Hatch!",
+        action: "Открыть!",
         at: egg.root.position.clone().setY(egg.height + 0.6),
         dist,
         holdSec: 0.35,

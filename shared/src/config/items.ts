@@ -17,8 +17,8 @@ export interface ToolDef {
 }
 
 export const TOOLS: Record<ToolKind, ToolDef> = {
-  bat: { kind: "bat", name: "Sword", icon: "🗡️", maxStack: 1 },
-  trap: { kind: "trap", name: "Bear Trap", icon: "🪤", maxStack: 99 },
+  bat: { kind: "bat", name: "Меч", icon: "🗡️", maxStack: 1 },
+  trap: { kind: "trap", name: "Капкан", icon: "🪤", maxStack: 99 },
 };
 
 /** Granted once to every profile: brand-new ones, and saves from before tools were items. */

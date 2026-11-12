@@ -151,7 +151,7 @@ export class GameRoom extends Room<{ state: GameState }> {
     });
     this.onMessage(MSG.Steal, (client, eggId: unknown) => {
       const err = this.heist.steal(client.sessionId, eggId);
-      if (err) return this.notify(client, `Can't grab that: ${err}`, "bad");
+      if (err) return this.notify(client, `Не удалось забрать капсулу: ${err}`, "bad");
       const m = this.meta.get(client.sessionId);
       if (m) m.profile.stats.eggsStolen++;
     });
@@ -247,14 +247,14 @@ export class GameRoom extends Room<{ state: GameState }> {
     this.topUpTraps(profile, now);
     this.pens.attach(client.sessionId, p, profile);
 
-    // Offline earnings: your pen income kept paying out (at a reduced rate) while you were away.
+    // Offline earnings: your pen income kept paying out (at a reduced rate) за время отсутствия.
     const offlineSec = Math.min(OFFLINE.maxHours * 3600, Math.max(0, (now - profile.lastSeen) / 1000));
     if (offlineSec >= OFFLINE.minSec && p.income > 0) p.offlineEarnings = Math.round(p.income * offlineSec * OFFLINE.rate);
 
     activeSessions.set(profileId, async () => {
       await this.saveProfile(client.sessionId);
       meta.released = true;
-      client.leave(CLOSE.TakenOver, "You joined from another tab or device.");
+      client.leave(CLOSE.TakenOver, "Профиль открыт в другой вкладке или на другом устройстве.");
     });
 
     console.log(`[room ${this.roomId}] ${p.name} joined → base ${baseIndex} (speed ${p.speedStat}, $${p.money})`);
@@ -325,7 +325,7 @@ export class GameRoom extends Room<{ state: GameState }> {
     const { ticks, tickMs, maxMs, moves } = this.perf;
     const heap = process.memoryUsage().heapUsed / 1024 / 1024;
     console.log(
-      `[perf room ${this.roomId}] ${this.state.players.size} players · tick avg ${(tickMs / Math.max(1, ticks)).toFixed(2)} ms, max ${maxMs.toFixed(2)} ms (budget ${TICK_MS} ms) · ${(moves / PERF_EVERY_SEC).toFixed(0)} moves/s · heap ${heap.toFixed(0)} MB`,
+      `[perf room ${this.roomId}] ${this.state.players.size} players · tick avg ${(tickMs / Math.max(1, ticks)).toFixed(2)} мс, max ${maxMs.toFixed(2)} мс (budget ${TICK_MS} мс) · ${(moves / PERF_EVERY_SEC).toFixed(0)} moves/s · heap ${heap.toFixed(0)} MB`,
     );
     this.perf = { ticks: 0, tickMs: 0, maxMs: 0, moves: 0 };
   }
@@ -367,7 +367,7 @@ export class GameRoom extends Room<{ state: GameState }> {
     m.knockSpeed = Math.hypot(msg.vx, msg.vz);
     m.knockV = { x: msg.vx, z: msg.vz, y: msg.vy };
     // The server marks the victim as knocked itself, so everyone else sees the ragdoll even if the victim's own game
-    // isn't sending updates (e.g. its browser tab is in the background).
+    // isn't sending updates (Например, its browser tab is in the background).
     const victim = this.state.players.get(sessionId);
     if (victim) victim.anim = Anim.Knocked;
     m.profile.stats.timesCaught++;
@@ -449,7 +449,7 @@ export class GameRoom extends Room<{ state: GameState }> {
       case "trap":
         return this.placeTrap(client, p, m, msg);
       default:
-        return this.notify(client, "Pick an item on your hotbar first (keys 1–0).", "bad");
+        return this.notify(client, "Сначала выбери предмет на панели (клавиши 1–0).", "bad");
     }
   }
 
@@ -465,7 +465,7 @@ export class GameRoom extends Room<{ state: GameState }> {
    */
   private batHit(client: Client, p: PlayerState, m: PlayerMeta) {
     if (!this.heldTool(p, m, "bat")) return;
-    if (PVP.blockedInSafeZone && p.z < SAFE_ZONE_Z) return this.notify(client, "Can't use the sword in the safe zone.", "bad");
+    if (PVP.blockedInSafeZone && p.z < SAFE_ZONE_Z) return this.notify(client, "В безопасной зоне меч недоступен.", "bad");
     const now = Date.now();
     if (now < m.batReadyAt) return;
     m.batReadyAt = now + PVP.cooldownSec * 1000;
@@ -497,7 +497,7 @@ export class GameRoom extends Room<{ state: GameState }> {
 
     if (target0.kind === "guardian") {
       const def = this.heist.stunGuardian(target0.id, PVP.guardianStunSec * 1000);
-      if (def) this.notify(client, `Bapped the ${def.name}! It's dazed.`, "good");
+      if (def) this.notify(client, `Охранник «${def.name}» оглушён!`, "good");
       return;
     }
     const targetId = target0.id;
@@ -519,7 +519,7 @@ export class GameRoom extends Room<{ state: GameState }> {
       droppedEgg: hadEgg,
     };
     this.knock(targetId, knockMsg);
-    this.notify(client, hadEgg ? `Bapped ${target.name}! Their egg dropped.` : `Bapped ${target.name}!`, "good");
+    this.notify(client, hadEgg ? `Игрок ${target.name} уронил капсулу от удара!` : `Ты ударил игрока ${target.name}!`, "good");
   }
 
   /** Place one bear trap at the requested spot (the client's preview); the server has the final say on where. */
@@ -528,22 +528,22 @@ export class GameRoom extends Room<{ state: GameState }> {
     if (!tool) return;
     const { x, z } = msg;
     if (!isNum(x) || !isNum(z)) return;
-    if (!TRAP.allowInSafeZone && (p.z < SAFE_ZONE_Z || z < SAFE_ZONE_Z)) return this.notify(client, "Can't place traps in the safe zone.", "bad");
-    if (Math.hypot(x - p.x, z - p.z) > TRAP.placeRange) return this.notify(client, "That's too far away to place a trap.", "bad");
+    if (!TRAP.allowInSafeZone && (p.z < SAFE_ZONE_Z || z < SAFE_ZONE_Z)) return this.notify(client, "В безопасной зоне нельзя ставить капканы.", "bad");
+    if (Math.hypot(x - p.x, z - p.z) > TRAP.placeRange) return this.notify(client, "Слишком далеко, чтобы поставить капкан.", "bad");
     // Inside the walls and on the floor. With both you and the spot past the safe-zone line, you're both inside
     // the straight corridor, so the line between you can't pass through a wall.
     const inside = clampToWorld(x, z, 0.5);
-    if (Math.abs(inside.x - x) > 0.01 || Math.abs(inside.z - z) > 0.01 || groundHeightAt(x, z) !== 0) return this.notify(client, "You can't place a trap there.", "bad");
-    if (this.state.isNight && z >= SAFE_ZONE_Z) return this.notify(client, "The biomes are sealed off for the night.", "bad");
+    if (Math.abs(inside.x - x) > 0.01 || Math.abs(inside.z - z) > 0.01 || groundHeightAt(x, z) !== 0) return this.notify(client, "Здесь капкан поставить нельзя.", "bad");
+    if (this.state.isNight && z >= SAFE_ZONE_Z) return this.notify(client, "Биомы закрыты на ночь.", "bad");
     let mine = 0;
     let crowded = false;
     this.state.traps.forEach((t) => {
       if (t.ownerId === client.sessionId) mine++;
       if (Math.hypot(t.x - x, t.z - z) < TRAP.minSpacing) crowded = true;
     });
-    if (mine >= TRAP.maxActive) return this.notify(client, `You already have ${TRAP.maxActive} traps out.`, "bad");
-    if (crowded) return this.notify(client, "There's already a trap right there.", "bad");
-    if (!consumeTool(m.profile, tool.uid)) return this.notify(client, "You're out of bear traps.", "bad");
+    if (mine >= TRAP.maxActive) return this.notify(client, `Лимит установленных капканов: ${TRAP.maxActive}.`, "bad");
+    if (crowded) return this.notify(client, "Здесь уже стоит капкан.", "bad");
+    if (!consumeTool(m.profile, tool.uid)) return this.notify(client, "У тебя закончились капканы.", "bad");
 
     const trap = new TrapState();
     trap.x = x;
@@ -594,7 +594,7 @@ export class GameRoom extends Room<{ state: GameState }> {
 
       gone.push(id); // one trigger per trap
       const ownerClient = this.clients.getById(trap.ownerId);
-      if (ownerClient) this.notify(ownerClient, `Your trap caught ${caught}!`, "good");
+      if (ownerClient) this.notify(ownerClient, `В твой капкан попался ${caught}!`, "good");
       const ownerMeta = this.meta.get(trap.ownerId);
       if (TRAP.afterTrigger === "return" && ownerMeta) {
         grantTool(ownerMeta.profile, "trap", 1, now);
@@ -609,10 +609,10 @@ export class GameRoom extends Room<{ state: GameState }> {
     const p = this.state.players.get(client.sessionId);
     if (!p || !this.state.potionAvailable) return;
     const spot = useSpot(HUB_BUILDINGS.potion);
-    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.notify(client, "Go to the potion to claim it.", "bad");
+    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.notify(client, "Подойди к зелью, чтобы забрать его.", "bad");
     this.state.potionAvailable = false;
     this.progress.grantSpeedBoost(client.sessionId, WORLD_EVENTS.potionBoostMin);
-    this.notify(client, `Potion claimed! x2 Speed for ${WORLD_EVENTS.potionBoostMin} minutes.`, "good");
+    this.notify(client, `Зелье получено! Скорость ×2 на ${WORLD_EVENTS.potionBoostMin} мин.`, "good");
   }
 
   /** Claim the free chest: must be standing at its spot and off cooldown. */
@@ -623,15 +623,15 @@ export class GameRoom extends Room<{ state: GameState }> {
     const now = Date.now();
     if (now < m.profile.nextChestAt) return;
     const spot = useSpot(HUB_BUILDINGS.chest);
-    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.notify(client, "Go to the Free Chest to claim it.", "bad");
+    if (Math.hypot(p.x - spot.x, p.z - spot.z) > USE_RANGE) return this.notify(client, "Подойди к бесплатному сундуку.", "bad");
 
     m.profile.nextChestAt = now + CHEST.cooldownMin * 60_000;
     const money = Math.round(CHEST.moneyMin + Math.random() * (CHEST.moneyMax - CHEST.moneyMin));
     p.money += money;
-    let text = `Free Chest: +$${formatShort(money)}`;
+    let text = `Бесплатный сундук: +$${formatShort(money)}`;
     if (Math.random() < CHEST.gemChance) {
       m.profile.gems += CHEST.gemAmount;
-      text += ` and +${CHEST.gemAmount} 💎`;
+      text += ` и +${CHEST.gemAmount} 💎`;
     }
     this.notify(client, text, "good");
     this.pens.changed(client.sessionId); // refreshes the Gems display and saves
@@ -645,7 +645,7 @@ export class GameRoom extends Room<{ state: GameState }> {
     const spot = offlineCashSpot(p.baseIndex);
     if (Math.hypot(p.x - spot.x, p.z - spot.z) > OFFLINE_CASH_SERVER_RADIUS) return;
     p.money += p.offlineEarnings;
-    this.notify(client, `Welcome back! Claimed $${formatShort(p.offlineEarnings)} in offline earnings.`, "good");
+    this.notify(client, `С возвращением! Получено $${formatShort(p.offlineEarnings)} за время отсутствия.`, "good");
     p.offlineEarnings = 0;
     void this.saveProfile(client.sessionId);
   }
@@ -663,7 +663,7 @@ export class GameRoom extends Room<{ state: GameState }> {
       if (!client) return;
       const back: CorrectMsg = { x: p.x, y: p.y, z: p.z };
       client.send(MSG.Correct, back);
-      this.notify(client, `Night has fallen — everyone's pulled back to the hub, but eggs grow ${WORLD_EVENTS.nightGrowMult}x faster until it passes!`, "info");
+      this.notify(client, `Наступила ночь. Все вернулись на базу, а капсулы созревают в ${WORLD_EVENTS.nightGrowMult} раз быстрее!`, "info");
     });
   }
 

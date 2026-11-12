@@ -401,9 +401,9 @@ export class Game {
       bloxity.gameplayEnd();
       bloxity.updateRoom("");
       if (code === CLOSE.TakenOver) {
-        this.hud.showOverlay("Playing somewhere else", "This profile joined from another tab or device, so this one was disconnected. Your progress is saved.");
+        this.hud.showOverlay("Игра открыта в другом месте", "Профиль открыт в другой вкладке или на другом устройстве. Прогресс сохранён.");
       } else {
-        this.hud.showOverlay("Disconnected", "Lost connection to the game server. Your progress was saved up to the last autosave.");
+        this.hud.showOverlay("Соединение прервано", "Связь с сервером потеряна. Восстановится последнее автосохранение.");
       }
     });
     this.hud.setStatus("");
@@ -495,13 +495,13 @@ export class Game {
     const key = this.input.isTouch ? "" : "[F] ";
     const inMyPen = inPen(p.baseIndex, this.me.pos.x, this.me.pos.z, PEN.inset, p.penLevel);
     let action: string | null = null;
-    if (this.backpack.isOpen) action = this.pickedSlot >= 0 ? "Click another slot to swap" : "Drag items onto your hotbar";
+    if (this.backpack.isOpen) action = this.pickedSlot >= 0 ? "Нажми на другую ячейку, чтобы поменять предметы" : "Перетащи предметы на панель";
     else if (p.equipped === "bat") {
       const cd = this.hud.cooldownLeft("bat");
-      action = cd > 0 ? `Sword ready in ${cd.toFixed(1)}s` : this.me.pos.z < SAFE_ZONE_Z ? "No swinging in the safe zone" : `${key}Swing sword`;
-    } else if (p.equipped === "trap") action = this.trapPreview.valid ? `${key}Place bear trap` : "Can't place a trap here";
-    else if (p.equipped === "egg") action = inMyPen ? `${key}Place egg in your pen` : "Walk into your pen to place this egg";
-    else if (p.equipped === "pet") action = inMyPen ? `${key}Place pet in your pen` : "Walk into your pen to place this pet";
+      action = cd > 0 ? `Меч готов через ${cd.toFixed(1)} с` : this.me.pos.z < SAFE_ZONE_Z ? "В безопасной зоне меч недоступен" : `${key}Взмахнуть мечом`;
+    } else if (p.equipped === "trap") action = this.trapPreview.valid ? `${key}Поставить капкан` : "Здесь капкан поставить нельзя";
+    else if (p.equipped === "egg") action = inMyPen ? `${key}Поставить капсулу в загоне` : "Войди в свой загон, чтобы поставить капсулу";
+    else if (p.equipped === "pet") action = inMyPen ? `${key}Выставить мутанта в загоне` : "Войди в свой загон, чтобы выставить мутанта";
     this.hud.setAction(action);
   }
 
@@ -549,29 +549,29 @@ export class Game {
       return this.hud.setHint(null);
     }
     // Egg tasks first: they're the next step whenever they apply.
-    if (this.pen.readyEggs > 0) return this.hud.setHint("An egg is ready! Walk up to it and hold E to hatch 🐣");
+    if (this.pen.readyEggs > 0) return this.hud.setHint("Капсула готова! Подойди и удерживай E, чтобы открыть 🐣");
     if (p.eggCount > 0 && this.pen.growingCount < (this.pen.inv?.slots ?? 0)) {
       this.world.pointAtTreadmill(-1);
       if (p.equipped === "egg") {
-        return this.hud.setHint(this.input.isTouch ? "Walk into your pen and tap ✋ to place your egg 🥚" : "Walk into your pen and press F to place your egg 🥚");
+        return this.hud.setHint(this.input.isTouch ? "Войди в свой загон и нажми ✋, чтобы поставить капсулу 🥚" : "Войди в свой загон и нажми F, чтобы поставить капсулу 🥚");
       }
       const slot = this.pen.inv?.hotbar.findIndex((uid) => this.pen.inv?.eggs.some((e) => e.uid === uid)) ?? -1;
       return this.hud.setHint(
         slot >= 0
           ? this.input.isTouch
-            ? `Tap your egg on the hotbar to hold it 🥚`
-            : `Press ${(slot + 1) % 10} to hold your egg 🥚`
-          : "Open your inventory (🎒) and put an egg on your hotbar",
+            ? `Нажми на капсулу на панели, чтобы взять её 🥚`
+            : `Нажми ${(slot + 1) % 10}, чтобы взять капсулу 🥚`
+          : "Открой рюкзак (🎒) и перетащи капсулу на панель",
       );
     }
     const newbie = p.speedStat < 50;
     const running = this.me.onTreadmill;
     this.world.pointAtTreadmill(newbie && !running ? p.baseIndex : -1);
     if (running && newbie)
-      this.hud.setHint(this.input.isTouch ? "Running automatically! Move or jump to get off" : "Running automatically! Press WASD or Space to get off");
-    else if (p.speedStat === 0) this.hud.setHint("Step onto your treadmill to gain Speed 👟");
-    else if (newbie) this.hud.setHint("Get back on your treadmill to keep training!");
-    else if (p.eggCount === 0 && !p.carrying && this.pen.usedSlots === 0) this.hud.setHint("Now head down the corridor and steal an egg from the Forest 🥚");
+      this.hud.setHint(this.input.isTouch ? "Ты бежишь автоматически. Сдвинься или прыгни, чтобы сойти" : "Ты бежишь автоматически. Нажми WASD или пробел, чтобы сойти");
+    else if (p.speedStat === 0) this.hud.setHint("Встань на беговую дорожку, чтобы набрать скорость 👟");
+    else if (newbie) this.hud.setHint("Вернись на дорожку, чтобы продолжить тренировку!");
+    else if (p.eggCount === 0 && !p.carrying && this.pen.usedSlots === 0) this.hud.setHint("Иди по коридору в лес и укради капсулу 🥚");
     else this.hud.setHint(null);
   }
 

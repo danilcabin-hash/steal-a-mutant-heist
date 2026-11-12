@@ -13,7 +13,7 @@ export const HUB = {
 /** Half-width of the biome corridor (walls at x = ±CORRIDOR_HALF_WIDTH). */
 export const CORRIDOR_HALF_WIDTH = 32;
 
-/** Painted "SAFE ZONE" line. Everything with z < SAFE_ZONE_Z is safe. */
+/** Painted "БЕЗОПАСНАЯ ЗОНА" line. Everything with z < SAFE_ZONE_Z is safe. */
 export const SAFE_ZONE_Z = 0;
 
 export const MAX_PLAYERS = 7;
@@ -51,9 +51,9 @@ export interface BasePlot {
   treadmill: { x: number; z: number };
   /** Owner name painted on the floor in front of the gate. */
   sign: { x: number; z: number };
-  /** "Upgrade" board beside the treadmill. */
+  /** "Улучшение" board beside the treadmill. */
   treadmillSign: { x: number; z: number };
-  /** "Upgrade Pen" board just inside the gate. */
+  /** "Улучшение загона" board just inside the gate. */
   penSign: { x: number; z: number };
 }
 
@@ -180,12 +180,12 @@ export function groundHeightAt(x: number, z: number): number {
 // ---------------------------------------------------------------- shared hub buildings
 
 export const HUB_BUILDINGS = {
-  sell: { x: -60, z: -9, label: "SELL" },
-  fuse: { x: -30, z: -9, label: "Fuse Machine" },
-  potion: { x: 0, z: -18, label: "POTION" },
-  trails: { x: 30, z: -9, label: "TRAILS SHOP" },
-  leaderboard: { x: 60, z: -10, label: "MOST MONEY/s" },
-  chest: { x: 45.5, z: -9.5, label: "FREE CHEST" },
+  sell: { x: -60, z: -9, label: "ПРОДАЖА" },
+  fuse: { x: -30, z: -9, label: "Аппарат слияния" },
+  potion: { x: 0, z: -18, label: "ЗЕЛЬЕ" },
+  trails: { x: 30, z: -9, label: "МАГАЗИН СЛЕДОВ" },
+  leaderboard: { x: 60, z: -10, label: "ЛУЧШИЙ ДОХОД/С" },
+  chest: { x: 45.5, z: -9.5, label: "БЕСПЛАТНЫЙ СУНДУК" },
 } as const;
 
 /** Where players stand to use a hub building: in front of it (buildings face the bases, -Z). */
@@ -212,18 +212,18 @@ export interface BiomeDef {
 export const BIOME_LENGTH = 200;
 
 export const BIOMES: BiomeDef[] = [
-  { id: "forest", name: "Forest", emoji: "🌳", recommendedSpeed: 0, floor: "#5fd12e", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#3ad13a", sky: "day" },
-  { id: "lake", name: "Lake", emoji: "🦢", recommendedSpeed: 900, floor: "#4cc23a", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#3ad13a", sky: "day" },
-  { id: "desert", name: "Desert", emoji: "🌵", recommendedSpeed: 10_000, floor: "#ecd49a", wall: "#dcb660", wallAlt: "#cfa650", wallTop: "#f0cf78", sky: "day" },
-  { id: "jungle", name: "Jungle", emoji: "😬", recommendedSpeed: 40_000, floor: "#35a92c", wall: "#b8743a", wallAlt: "#a8662e", wallTop: "#2fbf2f", sky: "day" },
-  { id: "snow", name: "Snow", emoji: "❄️", recommendedSpeed: 170_000, floor: "#eef2f7", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#a8dcff", sky: "day" },
-  { id: "volcano", name: "Volcano", emoji: "🌋", recommendedSpeed: 700_000, floor: "#3b3b46", wall: "#2a2a31", wallAlt: "#232329", wallTop: "#ff7a1a", sky: "day" },
-  { id: "abyss", name: "Abyss Ocean", emoji: "🌊", recommendedSpeed: 2_500_000, floor: "#1d3fc4", wall: "#2150c8", wallAlt: "#1a45b0", wallTop: "#3a7bff", sky: "day" },
-  { id: "prehistoric", name: "Prehistoric", emoji: "🦖", recommendedSpeed: 18_000_000, floor: "#cfae6c", wall: "#8f6d3c", wallAlt: "#7f5f32", wallTop: "#6f9a3a", sky: "day" },
-  { id: "cosmic", name: "Cosmic", emoji: "👹", recommendedSpeed: 700_000_000, floor: "#1b2452", wall: "#0c1026", wallAlt: "#10152e", wallTop: "#ffffff", sky: "night" },
-  { id: "cherry", name: "Cherry Blossom", emoji: "🌸", recommendedSpeed: 2_500_000_000, floor: "#f6c8d8", wall: "#9a5064", wallAlt: "#8a4658", wallTop: "#ff9ec4", sky: "day" },
-  { id: "titan", name: "Titan Temple", emoji: "🗿", recommendedSpeed: 7_000_000_000, floor: "#5fbf4a", wall: "#5a70b0", wallAlt: "#4d62a0", wallTop: "#38b038", sky: "day" },
-  { id: "celestial", name: "Celestial Rift", emoji: "😇", recommendedSpeed: 20_000_000_000, floor: "#f2f5ff", wall: "#d8c68e", wallAlt: "#cbb87e", wallTop: "#ffd966", sky: "day" },
+  { id: "forest", name: "Лес", emoji: "🌳", recommendedSpeed: 0, floor: "#5fd12e", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#3ad13a", sky: "day" },
+  { id: "lake", name: "Озеро", emoji: "🦢", recommendedSpeed: 900, floor: "#4cc23a", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#3ad13a", sky: "day" },
+  { id: "desert", name: "Пустыня", emoji: "🌵", recommendedSpeed: 10_000, floor: "#ecd49a", wall: "#dcb660", wallAlt: "#cfa650", wallTop: "#f0cf78", sky: "day" },
+  { id: "jungle", name: "Джунгли", emoji: "😬", recommendedSpeed: 40_000, floor: "#35a92c", wall: "#b8743a", wallAlt: "#a8662e", wallTop: "#2fbf2f", sky: "day" },
+  { id: "snow", name: "Снежная долина", emoji: "❄️", recommendedSpeed: 170_000, floor: "#eef2f7", wall: "#c07a3c", wallAlt: "#b06c30", wallTop: "#a8dcff", sky: "day" },
+  { id: "volcano", name: "Вулкан", emoji: "🌋", recommendedSpeed: 700_000, floor: "#3b3b46", wall: "#2a2a31", wallAlt: "#232329", wallTop: "#ff7a1a", sky: "day" },
+  { id: "abyss", name: "Океанская бездна", emoji: "🌊", recommendedSpeed: 2_500_000, floor: "#1d3fc4", wall: "#2150c8", wallAlt: "#1a45b0", wallTop: "#3a7bff", sky: "day" },
+  { id: "prehistoric", name: "Доисторический мир", emoji: "🦖", recommendedSpeed: 18_000_000, floor: "#cfae6c", wall: "#8f6d3c", wallAlt: "#7f5f32", wallTop: "#6f9a3a", sky: "day" },
+  { id: "cosmic", name: "Космос", emoji: "👹", recommendedSpeed: 700_000_000, floor: "#1b2452", wall: "#0c1026", wallAlt: "#10152e", wallTop: "#ffffff", sky: "night" },
+  { id: "cherry", name: "Цветущая сакура", emoji: "🌸", recommendedSpeed: 2_500_000_000, floor: "#f6c8d8", wall: "#9a5064", wallAlt: "#8a4658", wallTop: "#ff9ec4", sky: "day" },
+  { id: "titan", name: "Храм титанов", emoji: "🗿", recommendedSpeed: 7_000_000_000, floor: "#5fbf4a", wall: "#5a70b0", wallAlt: "#4d62a0", wallTop: "#38b038", sky: "day" },
+  { id: "celestial", name: "Небесный разлом", emoji: "😇", recommendedSpeed: 20_000_000_000, floor: "#f2f5ff", wall: "#d8c68e", wallAlt: "#cbb87e", wallTop: "#ffd966", sky: "day" },
 ];
 
 /** What makes each biome feel different: a walking-speed modifier, a fog color for the atmosphere and a name/blurb shown on entry. */
@@ -236,18 +236,18 @@ export interface BiomeTrait {
 }
 
 export const BIOME_TRAITS: Record<string, BiomeTrait> = {
-  forest: { name: "Cozy Woods", desc: "Calm and safe: a gentle place to start.", speedMult: 1, fog: "#bfe3ff" },
-  lake: { name: "Misty Shores", desc: "Cool mist drifts over the water.", speedMult: 1, fog: "#c8f0f4" },
-  desert: { name: "Scorching Sands", desc: "Loose sand and heat: you move 8% slower.", speedMult: 0.92, fog: "#f3dca0" },
-  jungle: { name: "Thick Vines", desc: "Tangled undergrowth: you move 5% slower.", speedMult: 0.95, fog: "#a6d98a" },
-  snow: { name: "Icy Slide", desc: "Slippery ice: you move 8% faster.", speedMult: 1.08, fog: "#e4f1fb" },
-  volcano: { name: "Ash & Heat", desc: "Choking ash: you move 8% slower.", speedMult: 0.92, fog: "#5a2a22" },
-  abyss: { name: "Deep Currents", desc: "Heavy water: you move 10% slower.", speedMult: 0.9, fog: "#1a3a9a" },
-  prehistoric: { name: "Primal Stomp", desc: "Ancient and wild. Watch for the Rex.", speedMult: 1, fog: "#d9c48a" },
-  cosmic: { name: "Low Gravity", desc: "Floating between stars: you move 10% faster.", speedMult: 1.1, fog: "#1b1447" },
-  cherry: { name: "Petal Breeze", desc: "A warm wind at your back: 5% faster.", speedMult: 1.05, fog: "#ffd9e8" },
-  titan: { name: "Ancient Weight", desc: "Heavy stone air: you move 5% slower.", speedMult: 0.95, fog: "#a9b9dc" },
-  celestial: { name: "Heavenly Winds", desc: "Winds lift you: you move 12% faster.", speedMult: 1.12, fog: "#fff4d0" },
+  forest: { name: "Уютный лес", desc: "Спокойное место для первых рейдов.", speedMult: 1, fog: "#bfe3ff" },
+  lake: { name: "Туманные берега", desc: "Над водой стелется прохладный туман.", speedMult: 1, fog: "#c8f0f4" },
+  desert: { name: "Раскалённые пески", desc: "Песок и жара замедляют бег на 8%.", speedMult: 0.92, fog: "#f3dca0" },
+  jungle: { name: "Густые лианы", desc: "Заросли замедляют бег на 5%.", speedMult: 0.95, fog: "#a6d98a" },
+  snow: { name: "Скользкий лёд", desc: "На льду ты бежишь на 8% быстрее.", speedMult: 1.08, fog: "#e4f1fb" },
+  volcano: { name: "Пепел и жар", desc: "Пепел замедляет бег на 8%.", speedMult: 0.92, fog: "#5a2a22" },
+  abyss: { name: "Глубинные течения", desc: "Вода замедляет бег на 10%.", speedMult: 0.9, fog: "#1a3a9a" },
+  prehistoric: { name: "Первобытный топот", desc: "Дикий край. Остерегайся тираннозавра.", speedMult: 1, fog: "#d9c48a" },
+  cosmic: { name: "Слабая гравитация", desc: "Слабая гравитация ускоряет бег на 10%.", speedMult: 1.1, fog: "#1b1447" },
+  cherry: { name: "Ветер с лепестками", desc: "Попутный ветер ускоряет бег на 5%.", speedMult: 1.05, fog: "#ffd9e8" },
+  titan: { name: "Тяжесть древности", desc: "Тяжёлый воздух замедляет бег на 5%.", speedMult: 0.95, fog: "#a9b9dc" },
+  celestial: { name: "Небесные ветры", desc: "Ветер ускоряет бег на 12%.", speedMult: 1.12, fog: "#fff4d0" },
 };
 
 /** Walk speed multiplier at a world z (1 in the hub). */

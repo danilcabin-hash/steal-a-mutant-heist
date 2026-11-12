@@ -4,7 +4,7 @@ import {
   Anim,
   MUTATION_BY_ID,
   PET_BY_ID,
-  RARITY_COLOR,
+  RARITY_COLOR, RARITY_LABEL,
   formatShort,
   petDisplayName,
   petModelId,
@@ -60,9 +60,9 @@ export class PetEntity {
 
     this.label = new TextLabel(
       [
-        { text: this.def.rarity, color: RARITY_COLOR[this.def.rarity], size: 0.85 },
+        { text: RARITY_LABEL[this.def.rarity], color: RARITY_COLOR[this.def.rarity], size: 0.85 },
         { text: petDisplayName(this.def, mutation), color: mutation ? MUTATION_BY_ID.get(mutation)!.color : "#ffffff" },
-        { text: `$${formatShort(income)}/s`, color: "#5dff3a", size: 0.9 },
+        { text: `$${formatShort(income)}/с`, color: "#5dff3a", size: 0.9 },
       ],
       { lineHeight: 0.75 },
     );

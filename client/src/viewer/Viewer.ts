@@ -54,27 +54,27 @@ export async function startViewer(canvas: HTMLCanvasElement, ui: HTMLElement) {
     "beforeend",
     `<div class="viewer">
       <div class="panel v-list">
-        <h3>Models</h3>
+        <h3>Модели</h3>
         <div class="v-ids"></div>
-        <div class="v-new"><input placeholder="new id (e.g. egg_forest)"/><button>Add</button></div>
-        <a class="v-back" href="/">← Back to game</a>
+        <div class="v-new"><input placeholder="new id (Например, egg_forest)"/><button>Добавить</button></div>
+        <a class="v-back" href="/">← Вернуться в игру</a>
       </div>
       <div class="panel v-edit">
         <h3 class="v-title"></h3>
         <div class="v-status"></div>
-        <label>File <select class="v-file"></select></label>
-        <label>Scale <input class="v-scale" type="number" step="any"/></label>
-        <div class="v-row"><button data-s="0.5">÷2</button><button data-s="0.9">−10%</button><button data-s="1.1">+10%</button><button data-s="2">×2</button><button class="v-fit">Fit to 2 units tall</button></div>
-        <label>Rotation Y° <input class="v-rot" type="range" min="0" max="359" step="1"/> <span class="v-rot-val"></span></label>
+        <label >Файл <select class="v-file"></select></label>
+        <label >Масштаб <input class="v-scale" type="number" step="any"/></label>
+        <div class="v-row"><button data-s="0.5">÷2</button><button data-s="0.9">−10%</button><button data-s="1.1">+10%</button><button data-s="2">×2</button><button class="v-fit">Высота 2 единицы</button></div>
+        <label>Поворот по Y° <input class="v-rot" type="range" min="0" max="359" step="1"/> <span class="v-rot-val"></span></label>
         <div class="v-row"><button data-r="0">0°</button><button data-r="90">90°</button><button data-r="180">180°</button><button data-r="270">270°</button></div>
-        <label>Offset Y <input class="v-off" type="number" step="0.05"/></label>
-        <label>Texture <select class="v-tex"></select></label>
-        <label class="v-check"><input class="v-auto" type="checkbox"/> Auto-color by bone (when no texture)</label>
-        <label class="v-check"><input class="v-anim" type="checkbox" checked/> Play test run animation</label>
-        <label>Note <input class="v-note"/></label>
+        <label>Смещение по Y <input class="v-off" type="number" step="0.05"/></label>
+        <label >Текстура <select class="v-tex"></select></label>
+        <label class="v-check"><input class="v-auto" type="checkbox"/> Окрашивать по костям при отсутствии текстуры</label>
+        <label class="v-check"><input class="v-anim" type="checkbox" checked/> Показать анимацию бега</label>
+        <label >Примечание <input class="v-note"/></label>
         <div class="v-info"></div>
-        <div class="v-row"><button class="v-save primary">💾 Save manifest</button><button class="v-copy">Copy JSON</button></div>
-        <div class="v-drop">Drop a .glb / .gltf / .fbx (or .png texture) here to add it to <code>client/public/models</code></div>
+        <div class="v-row"><button class="v-save primary">💾 Сохранить манифест</button><button class="v-copy">Скопировать JSON</button></div>
+        <div class="v-drop">Перетащи сюда .glb, .gltf, .fbx или текстуру .png для добавления в <code>client/public/models</code></div>
         <div class="v-msg"></div>
       </div>
     </div>`,
@@ -130,8 +130,8 @@ export async function startViewer(canvas: HTMLCanvasElement, ui: HTMLElement) {
     q(".v-status").textContent = lib.status.get(current)?.message ?? "";
     const models = files.filter((f) => /\.(glb|gltf|fbx)$/i.test(f));
     const images = files.filter((f) => /\.(png|jpe?g)$/i.test(f));
-    fileSel.innerHTML = `<option value="">(placeholder)</option>` + models.map((f) => `<option${f === e.file ? " selected" : ""}>${f}</option>`).join("");
-    texSel.innerHTML = `<option value="">(none / from model)</option>` + images.map((f) => `<option${f === e.texture ? " selected" : ""}>${f}</option>`).join("");
+    fileSel.innerHTML = `<option value="">(встроенная модель)</option>` + models.map((f) => `<option${f === e.file ? " selected" : ""}>${f}</option>`).join("");
+    texSel.innerHTML = `<option value="">(нет / из модели)</option>` + images.map((f) => `<option${f === e.texture ? " selected" : ""}>${f}</option>`).join("");
     scaleIn.value = String(e.scale);
     rotIn.value = String(e.rotationY ?? 0);
     q(".v-rot-val").textContent = `${e.rotationY ?? 0}°`;
@@ -149,7 +149,7 @@ export async function startViewer(canvas: HTMLCanvasElement, ui: HTMLElement) {
       `Size: ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} units (player = 2 tall)`,
       `Bottom at y = ${box.min.y.toFixed(2)} (should be ≈ 0)`,
       rig ? `Rig: ${rig.ok ? rig.found.join(", ") : "no limbs found (static model)"}` : "",
-      `Clips: ${holder.getObjectByName("model")?.children[0]?.animations?.map((c) => c.name).join(", ") || "none"}`,
+      `Анимации: ${holder.getObjectByName("model")?.children[0]?.animations?.map((c) => c.name).join(", ") || "нет"}`,
     ];
     info.innerHTML = lines.filter(Boolean).join("<br/>");
   }
@@ -246,11 +246,11 @@ export async function startViewer(canvas: HTMLCanvasElement, ui: HTMLElement) {
   });
   q(".v-copy").addEventListener("click", async () => {
     await navigator.clipboard.writeText(JSON.stringify({ [current]: entry() }, null, 2));
-    say("Copied entry JSON to clipboard.");
+    say("Запись JSON скопирована.");
   });
   q(".v-save").addEventListener("click", async () => {
     const res = await fetch("/__dev/manifest", { method: "POST", body: JSON.stringify(lib.manifest) });
-    say(res.ok ? "Saved client/public/models/manifest.json — refresh the game tab to see it." : `Save failed: ${await res.text()}`, !res.ok);
+    say(res.ok ? "Манифест сохранён. Обнови вкладку игры." : `Ошибка сохранения: ${await res.text()}`, !res.ok);
   });
 
   const drop = q<HTMLDivElement>(".v-drop");
@@ -265,14 +265,14 @@ export async function startViewer(canvas: HTMLCanvasElement, ui: HTMLElement) {
     const file = e.dataTransfer?.files[0];
     if (!file) return;
     const res = await fetch(`/__dev/upload?name=${encodeURIComponent(file.name)}`, { method: "POST", body: file });
-    if (!res.ok) return say(`Upload failed: ${await res.text()}`, true);
+    if (!res.ok) return say(`Ошибка загрузки: ${await res.text()}`, true);
     await refreshFiles();
     if (/\.(png|jpe?g)$/i.test(file.name)) {
       entry().texture = file.name;
-      say(`Uploaded ${file.name} and set it as the texture of "${current}". Save to keep it.`);
+      say(`${file.name} загружен как текстура «${current}». Сохрани манифест.`);
     } else {
       entry().file = file.name;
-      say(`Uploaded ${file.name} and assigned it to "${current}". Adjust, then Save manifest.`);
+      say(`${file.name} назначен модели «${current}». Настрой модель и сохрани манифест.`);
     }
     show(current);
   });

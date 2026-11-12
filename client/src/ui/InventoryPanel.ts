@@ -32,8 +32,8 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 /**
  * Right-docked pen panel (reference layout), opened by the Egg and Paw buttons. Items themselves live in the
  * 🎒 backpack; this panel manages what's in the pen:
- * - Pets: "N/M Active", "+1 SLOT [$cost]", each pet with Equip (into the pen) / Unequip, and Equip Best
- * - Eggs: "Growing Eggs" with progress bars / Open buttons
+ * - Pets: "N/M Active", "+1 место [$cost]", each pet with Equip (into the pen) / Unequip, and Equip Best
+ * - Eggs: "Инкубация" with progress bars / Open buttons
  */
 export class InventoryPanel {
   private el: HTMLElement;
@@ -47,7 +47,7 @@ export class InventoryPanel {
     root.insertAdjacentHTML(
       "beforeend",
       `<div class="inv-panel" hidden>
-        <button class="inv-close" title="Close">&gt;</button>
+        <button class="inv-close" title="Закрыть">&gt;</button>
         <div class="inv-head"><span class="inv-title"></span><button class="inv-head-btn"></button></div>
         <div class="inv-body"></div>
       </div>`,
@@ -100,16 +100,16 @@ export class InventoryPanel {
     const pets = [...(inv?.pets ?? [])].sort((a, b) => Number(b.equipped) - Number(a.equipped) || b.income - a.income);
     const active = pets.filter((p) => p.equipped).length;
     // Active pets and growing eggs have separate room (each up to `slots`).
-    this.title.textContent = `${active}/${slots} Active`;
+    this.title.textContent = `В загоне ${active}/${slots}`;
     const cost = inv?.nextSlotCost ?? 0;
     this.headerBtn.hidden = !cost;
-    this.headerBtn.textContent = `+1 SLOT [$${formatShort(cost)}]`;
+    this.headerBtn.textContent = `+1 место [$${formatShort(cost)}]`;
     this.headerBtn.className = `inv-head-btn ${money >= cost ? "ok" : "no"}`;
     this.headerBtn.disabled = money < cost;
-    this.headerBtn.title = "Pen upgrades also add pet slots";
+    this.headerBtn.title = "Улучшения загона добавляют места для мутантов";
 
     if (!pets.length) {
-      this.body.innerHTML = `<div class="inv-empty">No pets yet — hatch an egg in your pen!</div>`;
+      this.body.innerHTML = `<div class="inv-empty">Пока нет мутантов. Открой капсулу в загоне!</div>`;
       return;
     }
     this.body.innerHTML =
@@ -122,25 +122,25 @@ export class InventoryPanel {
           return `<div class="inv-row${p.equipped ? " on" : ""}">
             <div class="inv-icon" style="border-color:${RARITY_COLOR[def.rarity]}">${def.icon}</div>
             <div class="inv-info"><div class="inv-name" style="color:${mut ? mut.color : RARITY_COLOR[def.rarity]}">${name}</div>
-              <div class="inv-sub">${p.weight}Kg · <b>$${formatShort(p.income)}/s</b></div></div>
+              <div class="inv-sub">${p.weight} кг · <b>$${formatShort(p.income)}/с</b></div></div>
             ${
               p.equipped
-                ? `<button class="inv-btn red" data-act="unequip" data-id="${p.uid}">Unequip</button>`
-                : `<button class="inv-btn green" data-act="equip" data-id="${p.uid}" ${full ? "disabled title='Pen is full'" : ""}>Equip</button>`
+                ? `<button class="inv-btn red" data-act="unequip" data-id="${p.uid}">Убрать</button>`
+                : `<button class="inv-btn green" data-act="equip" data-id="${p.uid}" ${full ? "disabled title='Загон заполнен'" : ""}>Выставить</button>`
             }
           </div>`;
         })
-        .join("") + `<button class="inv-best" data-act="best">Equip Best</button>`;
+        .join("") + `<button class="inv-best" data-act="best">Выставить лучших</button>`;
   }
 
   private renderEggs() {
     const { growing } = this.data;
-    this.title.textContent = "Growing Eggs";
+    this.title.textContent = "Инкубация";
     this.headerBtn.hidden = false;
-    this.headerBtn.textContent = "Grow All";
+    this.headerBtn.textContent = "Ускорить всё";
     this.headerBtn.className = "inv-head-btn gold";
     this.headerBtn.disabled = !this.actions.growAll || !growing.some((g) => g.readyIn > 0);
-    this.headerBtn.title = this.actions.growAll ? "Dev build: finish growing now" : "Coming with the Shop (Phase 5)";
+    this.headerBtn.title = this.actions.growAll ? "Тестовый режим: завершить инкубацию" : "Пока недоступно";
 
     const rows = growing.map((g) => {
       const def = EGG_BY_ID.get(g.defId)!;
@@ -150,12 +150,12 @@ export class InventoryPanel {
         ${
           g.readyIn > 0
             ? `<div class="inv-bar"><div style="width:${pct}%"></div><span>${formatClock(g.readyIn)}</span></div>`
-            : `<button class="inv-btn green wide" data-act="hatch" data-id="${g.uid}">Open</button>`
+            : `<button class="inv-btn green wide" data-act="hatch" data-id="${g.uid}">Открыть</button>`
         }
       </div>`;
     });
     this.body.innerHTML =
-      (rows.length ? rows.join("") : `<div class="inv-empty">Nothing growing. Hold an egg from your hotbar and press F in your pen!</div>`) +
-      `<div class="inv-empty">Unplanted eggs are in your backpack (🎒).</div>`;
+      (rows.length ? rows.join("") : `<div class="inv-empty">Инкубатор пуст. Возьми капсулу с панели и нажми F в своём загоне.</div>`) +
+      `<div class="inv-empty">Капсулы для инкубации лежат в рюкзаке (🎒).</div>`;
   }
 }

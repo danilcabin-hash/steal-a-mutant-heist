@@ -52,7 +52,7 @@ interface BaseVisual {
 }
 
 /** Builds the static level: sky, lights, hub with 8 pens, safe zone and the biome corridor. */
-/** The "MOST MONEY/s" board is drawn larger than its model's natural size. */
+/** The "ЛУЧШИЙ ДОХОД/С" board is drawn larger than its model's natural size. */
 /** Width of a glowing use-pad quad (its filled disc is ~75% of this, the rest is soft glow). */
 const PAD_SIZE = 6.6;
 
@@ -253,7 +253,7 @@ function buildCashPile(): THREE.Group {
   return root;
 }
 
-/** The leaderboard's black screen: rounded white rows with an avatar chip, the name and a green "Money/s:" tag, like the reference. */
+/** The leaderboard's black screen: rounded white rows with an avatar chip, the name and a green "Доход/с" tag, like the reference. */
 class LeaderboardScreen {
   readonly mesh: THREE.Mesh;
   private canvas = document.createElement("canvas");
@@ -297,7 +297,7 @@ class LeaderboardScreen {
       g.fillStyle = "#cfd6e4";
       g.font = `700 36px ${FONT}`;
       g.textAlign = "center";
-      g.fillText("Nobody yet…", W / 2, this.canvas.height / 2);
+      g.fillText("Пока никого…", W / 2, this.canvas.height / 2);
     }
     this.rows.slice(0, 8).forEach((r, i) => {
       const y = 16 + i * (rowH + gap);
@@ -324,14 +324,14 @@ class LeaderboardScreen {
       g.textAlign = "left";
       g.fillText(r.name, 84, y + rowH / 2 + 2);
       g.restore();
-      // "Money/s:" tag and the value under it.
+      // "Доход/с" tag and the value under it.
       rr(304, y + 6, 118 + 60, 24, 6);
       g.fillStyle = "#1fd6a0";
       g.fill();
       g.fillStyle = "#ffffff";
       g.font = `700 18px ${FONT}`;
       g.textAlign = "center";
-      g.fillText("Money/s:", 304 + 89, y + 19);
+      g.fillText("Доход/с", 304 + 89, y + 19);
       g.fillStyle = "#111318";
       g.font = `700 26px ${FONT}`;
       g.fillText(`$${formatShort(r.income)}`, 304 + 89, y + 46);
@@ -520,7 +520,7 @@ export class World {
     this.scene.add(tm);
     b.treadmill = tm;
     b.treadmillLevel = level;
-    b.stepLabel.setLines([{ text: `+${formatShort(treadmillLevel(level).gainPerStep)}/step`, color: "#3fb5ff" }]);
+    b.stepLabel.setLines([{ text: `+${formatShort(treadmillLevel(level).gainPerStep)} за шаг`, color: "#3fb5ff" }]);
   }
 
   /** Bouncing arrow over a base's treadmill (tutorial). Pass -1 to hide. */
@@ -561,7 +561,7 @@ export class World {
       this.scene.remove(b.floorName);
       (b.floorName.material as THREE.MeshBasicMaterial).map?.dispose();
     }
-    b.floorName = textPlane(name ? `${name}'s Base` : "Empty Base", 9, name ? "#ffffff" : "#d9f5c8", name ? "#111111" : "#3b7a28");
+    b.floorName = textPlane(name ? `База игрока ${name}` : "Свободная база", 9, name ? "#ffffff" : "#d9f5c8", name ? "#111111" : "#3b7a28");
     b.floorName.rotation.order = "YXZ";
     b.floorName.rotation.set(-Math.PI / 2, basePlot(index).rotY, 0);
     b.floorName.position.set(b.x, 0.05, b.z);
@@ -722,7 +722,7 @@ export class World {
     this.setSigns(index, 1, 1, false);
   }
 
-  /** Dark "Upgrade" board on a post (reference style); the returned label shows the next level and price. */
+  /** Dark "Улучшение" board on a post (reference style); the returned label shows the next level and price. */
   private signBoard(x: number, z: number, facing: number): PlaneLabel {
     const g = new THREE.Group();
     const dark = new THREE.MeshStandardMaterial({ color: "#1f2433", map: propTexture(), roughness: 0.6 });
@@ -803,26 +803,26 @@ export class World {
     b.treadmillSign.setLines(
       owned
         ? [
-            { text: "Upgrade", color: "#ffffff", size: 0.9 },
-            { text: next ? `Level ${treadmillLv} > Level ${next.level}` : `Level ${treadmillLv} (MAX)`, color: "#5dff3a", size: 0.8 },
+            { text: "Улучшение", color: "#ffffff", size: 0.9 },
+            { text: next ? `Уровень ${treadmillLv} > Уровень ${next.level}` : `Уровень ${treadmillLv} (МАКС.)`, color: "#5dff3a", size: 0.8 },
             ...(next ? [{ text: `$${formatShort(next.cost)}`, color: "#ffe066" }] : []),
           ]
         : [
-            { text: "Treadmill", color: "#ffffff", size: 0.9 },
-            { text: `Level ${treadmillLv}`, color: "#5dff3a", size: 1 },
+            { text: "Беговая дорожка", color: "#ffffff", size: 0.9 },
+            { text: `Уровень ${treadmillLv}`, color: "#5dff3a", size: 1 },
           ],
     );
     const nextPen = penLv < PEN_LEVELS.length ? PEN_LEVELS[penLv] : null;
     b.penSign.setLines(
       owned
         ? [
-            { text: "Upgrade Pen", color: "#ffffff", size: 0.9 },
-            { text: nextPen ? `Level ${penLv} > Level ${nextPen.level}` : `Level ${penLv} (MAX)`, color: "#5dff3a", size: 0.8 },
+            { text: "Улучшение загона", color: "#ffffff", size: 0.9 },
+            { text: nextPen ? `Уровень ${penLv} > Уровень ${nextPen.level}` : `Уровень ${penLv} (МАКС.)`, color: "#5dff3a", size: 0.8 },
             ...(nextPen ? [{ text: `$${formatShort(nextPen.cost)}`, color: "#ffe066" }] : []),
           ]
         : [
-            { text: "Pen", color: "#ffffff", size: 0.9 },
-            { text: `Level ${penLv}`, color: "#5dff3a", size: 1 },
+            { text: "Загон", color: "#ffffff", size: 0.9 },
+            { text: `Уровень ${penLv}`, color: "#5dff3a", size: 1 },
           ],
     );
   }
@@ -908,18 +908,18 @@ export class World {
       tag.scale.setScalar(scale);
       this.scene.add(tag);
     };
-    place("sellStall", HUB_BUILDINGS.sell.x, HUB_BUILDINGS.sell.z, "SELL", "#ff3b30", SHOP_SCALE);
-    place("fuseMachine", HUB_BUILDINGS.fuse.x, HUB_BUILDINGS.fuse.z, "Fuse Machine", "#2fb5ff");
-    place("trailsShop", HUB_BUILDINGS.trails.x, HUB_BUILDINGS.trails.z, "TRAILS SHOP", "#ffd21f", SHOP_SCALE);
+    place("sellStall", HUB_BUILDINGS.sell.x, HUB_BUILDINGS.sell.z, "ПРОДАЖА", "#ff3b30", SHOP_SCALE);
+    place("fuseMachine", HUB_BUILDINGS.fuse.x, HUB_BUILDINGS.fuse.z, "Аппарат слияния", "#2fb5ff");
+    place("trailsShop", HUB_BUILDINGS.trails.x, HUB_BUILDINGS.trails.z, "МАГАЗИН СЛЕДОВ", "#ffd21f", SHOP_SCALE);
     place("leaderboard", HUB_BUILDINGS.leaderboard.x, HUB_BUILDINGS.leaderboard.z, "", "#7dff4a", LEADERBOARD_SCALE); // title + rows are printed on the board itself
-    place("chest", HUB_BUILDINGS.chest.x, HUB_BUILDINGS.chest.z, "FREE CHEST", "#ffb020");
+    place("chest", HUB_BUILDINGS.chest.x, HUB_BUILDINGS.chest.z, "БЕСПЛАТНЫЙ СУНДУК", "#ffb020");
     const chestGlow = glowSprite("#ffb020", 9, 0.45);
     chestGlow.position.set(HUB_BUILDINGS.chest.x, 2.2, HUB_BUILDINGS.chest.z);
     this.scene.add(chestGlow);
     this.glows.push(chestGlow);
     // Title printed on the board's header plate and a screen of ranked rows: both flat on the model (which faces -z).
     const lb = HUB_BUILDINGS.leaderboard;
-    const title = textPlane("MOST MONEY/s", 5.6, "#62ff2e", "#0f6b1c");
+    const title = textPlane("ЛУЧШИЙ ДОХОД/С", 5.6, "#62ff2e", "#0f6b1c");
     title.rotation.y = Math.PI;
     title.scale.setScalar(LEADERBOARD_SCALE);
     title.position.set(lb.x, 9.32 * LEADERBOARD_SCALE, lb.z - 0.72 * LEADERBOARD_SCALE);
@@ -977,7 +977,7 @@ export class World {
     this.offlineCashLabel!.position.set(spot.x, 7.5, spot.z);
     this.offlineCashLabel!.setLines([
       { text: `$${formatShort(amount)}`, color: "#7dff4a", size: 1.2 },
-      { text: "while you were away", color: "#ffffff", size: 0.5 },
+      { text: "за время отсутствия", color: "#ffffff", size: 0.5 },
     ]);
   }
   private leaderboardScreen!: LeaderboardScreen;
@@ -987,7 +987,7 @@ export class World {
     this.potionPickup.visible = available;
   }
 
-  /** Refreshes the "MOST MONEY/s" board with the current top earners (called a few times a second). */
+  /** Refreshes the "ЛУЧШИЙ ДОХОД/С" board with the current top earners (called a few times a second). */
   setLeaderboard(rows: { name: string; income: number }[]) {
     this.leaderboardScreen.setRows(rows);
   }
@@ -996,7 +996,7 @@ export class World {
     const line = new THREE.Mesh(new THREE.BoxGeometry(HUB.xMax - HUB.xMin, 0.08, 0.7), new THREE.MeshStandardMaterial({ color: "#e0344a" }));
     line.position.set(0, 0.05, SAFE_ZONE_Z - 1);
     this.scene.add(line);
-    const text = textPlane("SAFE ZONE", 22, "#ffffff", "#111111");
+    const text = textPlane("БЕЗОПАСНАЯ ЗОНА", 22, "#ffffff", "#111111");
     // Flat on the ground, upright for players in the hub looking toward the corridor (+z).
     text.rotation.set(-Math.PI / 2, 0, Math.PI);
     text.position.set(0, 0.06, SAFE_ZONE_Z - 5);
@@ -1138,7 +1138,7 @@ export class World {
         post.add(board);
         // The speed recommendation is printed on the board's face toward the hub (where players approach from).
         const speedText = textPlane(`👟 ${formatShort(b.recommendedSpeed)}`, 2.6, "#2bff1f", "#000000");
-        const recText = textPlane("recommended", 4.2, "#2bff1f", "#000000");
+        const recText = textPlane("рекомендуется", 4.2, "#2bff1f", "#000000");
         for (const [t, y] of [[speedText, 0.35], [recText, -0.5]] as const) {
           t.rotation.y = Math.PI;
           t.position.set(0, y, -0.22);

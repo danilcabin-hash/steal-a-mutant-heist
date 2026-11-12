@@ -56,14 +56,14 @@ export class Backpack {
       "beforeend",
       `<div class="bp" hidden>
         <div class="bp-tabs">
-          <button data-tab="pets"><b>Pets</b><span>🐾</span></button>
-          <button data-tab="eggs"><b>Eggs</b><span>🥚</span></button>
-          <button data-tab="gear"><b>Gear</b><span>🗡️</span></button>
+          <button data-tab="pets"><b>Мутанты</b><span>🐾</span></button>
+          <button data-tab="eggs"><b>Капсулы</b><span>🥚</span></button>
+          <button data-tab="gear"><b>Снаряжение</b><span>🗡️</span></button>
         </div>
         <div class="bp-panel">
           <div class="bp-head">
-            <div><div class="bp-title">All Items</div><div class="bp-count"></div></div>
-            <input class="bp-search" type="text" placeholder="search" />
+            <div><div class="bp-title">Все предметы</div><div class="bp-count"></div></div>
+            <input class="bp-search" type="text" placeholder="Поиск" />
           </div>
           <div class="bp-grid"></div>
         </div>
@@ -133,7 +133,7 @@ export class Backpack {
         .map((p) => {
           const def = PET_BY_ID.get(p.species)!;
           const mut = p.mutation ? MUTATION_BY_ID.get(p.mutation) : undefined;
-          return { uid: p.uid, icon: def.icon, name: petDisplayName(def, p.mutation), sub: `${p.weight}Kg`, color: mut ? mut.color : RARITY_COLOR[def.rarity] };
+          return { uid: p.uid, icon: def.icon, name: petDisplayName(def, p.mutation), sub: `${p.weight} кг`, color: mut ? mut.color : RARITY_COLOR[def.rarity] };
         });
     }
     if (this.tab === "eggs") {
@@ -141,7 +141,7 @@ export class Backpack {
         const def = EGG_BY_ID.get(e.defId)!;
         // A fused egg already knows what it hatches into.
         const mut = e.fusion?.mutation ? MUTATION_BY_ID.get(e.fusion.mutation)?.prefix : "";
-        const sub = e.fusion ? `${e.fusion.weight}Kg${mut ? ` ${mut}` : ""}` : `size ${e.size.toFixed(2)}`;
+        const sub = e.fusion ? `${e.fusion.weight} кг${mut ? ` ${mut}` : ""}` : `размер ${e.size.toFixed(2)}`;
         return { uid: e.uid, icon: "🥚", name: def.name, sub, color: RARITY_COLOR[def.rarity] };
       });
     }
@@ -161,17 +161,17 @@ export class Backpack {
     if (!force && sig === this.sig) return;
     this.sig = sig;
     for (const b of this.el.querySelectorAll<HTMLElement>(".bp-tabs [data-tab]")) b.classList.toggle("on", b.dataset.tab === this.tab);
-    this.count.textContent = `${this.tab === "pets" ? "Pets" : this.tab === "eggs" ? "Eggs" : "Gear"}: ${total}`;
+    this.count.textContent = `${this.tab === "pets" ? "Мутанты" : this.tab === "eggs" ? "Капсулы" : "Снаряжение"}: ${total}`;
     this.grid.innerHTML = cards.length
       ? cards
           .map(
-            (c) => `<div class="bp-card" data-uid="${c.uid}" title="Drag onto the hotbar (or click)">
+            (c) => `<div class="bp-card" data-uid="${c.uid}" title="Перетащи на панель или нажми">
               <span class="bp-icon">${c.icon}</span>
               <span class="bp-name" style="color:${c.color}">${esc(c.name)}${c.sub ? ` (${esc(c.sub)})` : ""}</span>
             </div>`,
           )
           .join("")
-      : `<div class="bp-empty">${q ? "Nothing matches." : this.tab === "pets" ? "No pets in your inventory — pets in your pen live there." : "Nothing here."}</div>`;
+      : `<div class="bp-empty">${q ? "По запросу ничего не найдено." : this.tab === "pets" ? "В рюкзаке нет мутантов. Выставленные мутанты находятся в загоне." : "Здесь пусто."}</div>`;
   }
 
   // ------------------------------------------------------------------ drag and drop

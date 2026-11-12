@@ -1,5 +1,5 @@
 :root {
-  --font: "Fredoka", "Arial Rounded MT Bold", "Segoe UI", sans-serif;
+  --font: "Nunito", "Arial Rounded MT Bold", "Segoe UI", sans-serif;
   --outline: #151515;
   --green: #4ce11f;
   --blue: #1fc0ff;
@@ -1996,7 +1996,7 @@ body {
   box-shadow: 0 0 0 3px #5dff3a;
 }
 .pet-card.on::after {
-  content: "In pen";
+  content: "В загоне";
   position: absolute;
   top: 2px;
   left: 4px;

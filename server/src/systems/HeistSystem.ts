@@ -91,14 +91,14 @@ export class HeistSystem {
 
   /** Returns an error string, or null on success. */
   steal(sessionId: string, eggId: unknown): string | null {
-    if (typeof eggId !== "string") return "bad egg id";
+    if (typeof eggId !== "string") return "неверная капсула";
     const p = this.state.players.get(sessionId);
     const egg = this.state.eggs.get(eggId);
-    if (!p || !egg) return "egg not found";
-    if (p.carrying) return "already carrying an egg";
-    if (!this.hooks.canAct(sessionId)) return "stunned";
-    if (egg.state !== EggStatus.InNest && egg.state !== EggStatus.Loose) return "egg not available";
-    if (Math.hypot(p.x - egg.x, p.z - egg.z) > EGG_RULES.stealRange) return "too far";
+    if (!p || !egg) return "капсула не найдена";
+    if (p.carrying) return "ты уже несёшь капсулу";
+    if (!this.hooks.canAct(sessionId)) return "ты оглушён";
+    if (egg.state !== EggStatus.InNest && egg.state !== EggStatus.Loose) return "капсула недоступна";
+    if (Math.hypot(p.x - egg.x, p.z - egg.z) > EGG_RULES.stealRange) return "ты слишком далеко";
 
     egg.state = EggStatus.Carried;
     egg.carrier = sessionId;

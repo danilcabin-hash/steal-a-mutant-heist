@@ -5,7 +5,7 @@ import { TextLabel } from "../ui/labels.ts";
 
 /**
  * An egg growing in a pen, reference style: it physically grows while a countdown runs
- * ("Egg / 1m 3s"), then says "Ready!" and wobbles until someone hatches it.
+ * ("Egg / 1m 3s"), then says "Готово!" and wobbles until someone hatches it.
  */
 export class PenEggEntity {
   readonly root = new THREE.Group();
@@ -85,11 +85,11 @@ export class PenEggEntity {
     this.model.rotation.z = wobble;
     this.label.position.y = scale + 0.35;
 
-    const text = this.ready ? "Ready!" : formatClock(Math.ceil(this.left));
+    const text = this.ready ? "Готово!" : formatClock(Math.ceil(this.left));
     if (text !== this.lastLabel) {
       this.lastLabel = text;
       this.label.setLines([
-        { text: "Egg", color: RARITY_COLOR[this.def.rarity] === "#ffffff" ? "#ff5ef2" : RARITY_COLOR[this.def.rarity] },
+        { text: "Капсула", color: RARITY_COLOR[this.def.rarity] === "#ffffff" ? "#ff5ef2" : RARITY_COLOR[this.def.rarity] },
         { text, color: this.ready ? "#5dff3a" : "#ffffff" },
       ]);
     }
@@ -104,5 +104,5 @@ export class PenEggEntity {
 export function formatClock(sec: number) {
   const m = Math.floor(sec / 60);
   const s = sec % 60;
-  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+  return m > 0 ? `${m} мин ${s} с` : `${s} с`;
 }

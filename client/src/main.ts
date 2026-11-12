@@ -21,7 +21,7 @@ function loadModels() {
   if (libLoad) return libLoad;
   const lib = new ModelLibrary();
   let lastStep = -1;
-  bloxity.loadingStep("Loading models…");
+  bloxity.loadingStep("Загрузка моделей…");
   const state = {
     lib,
     progress: 0,
@@ -31,7 +31,7 @@ function loadModels() {
         const bar = ui.querySelector<HTMLElement>(".start .bar");
         if (bar) bar.style.width = `${state.progress * 100}%`;
         const pct = Math.floor(state.progress * 10) * 10;
-        if (pct !== lastStep) bloxity.loadingStep(`Loading models… ${(lastStep = pct)}%`);
+        if (pct !== lastStep) bloxity.loadingStep(`Загрузка моделей… ${(lastStep = pct)}%`);
       })
       .then(() => void bloxity.loadingEnd())
       .catch((e) => {
@@ -55,7 +55,7 @@ function showStartScreen() {
       <button class="play big-btn shop">Играть</button>
       <div class="progress"><div class="bar"></div></div>
       <div class="err"></div>
-      ${import.meta.env.DEV ? `<a class="viewer-link" href="?viewer">Open Model Viewer</a>` : ""}
+      ${import.meta.env.DEV ? `<a class="viewer-link" href="?viewer">Открыть просмотр моделей</a>` : ""}
     </div>`;
   const nameIn = ui.querySelector(".name") as HTMLInputElement;
   nameIn.value = saved;
@@ -71,12 +71,12 @@ function showStartScreen() {
     if (user) {
       nameIn.value = bloxity.displayName(user).slice(0, 16);
       nameIn.disabled = true;
-      loginRow.innerHTML = `<span>Logged in as <b></b></span><button data-bx="logout">Log out</button>`;
+      loginRow.innerHTML = `<span>Аккаунт <b></b></span><button data-bx="logout">Выйти</button>`;
       (loginRow.querySelector("b") as HTMLElement).textContent = `@${user.username}`;
     } else {
       nameIn.disabled = false;
       nameIn.value = safeGet("egg.name") ?? "";
-      loginRow.innerHTML = `<button data-bx="login">Log in with Bloxity</button>`;
+      loginRow.innerHTML = `<button data-bx="login">Войти через Bloxity</button>`;
     }
   });
   loginRow.addEventListener("click", async (e) => {
@@ -101,8 +101,8 @@ function showStartScreen() {
       if (!ui.querySelector(".start")) showStartScreen();
       (ui.querySelector(".err") as HTMLElement).textContent =
         import.meta.env.DEV
-          ? `Could not connect to the game server at ${serverUrl()}. Is "npm run dev" running? (${(e as Error).message ?? e})`
-          : "Couldn't reach the game server. Please try again in a moment.";
+          ? `Не удалось подключиться к серверу ${serverUrl()}. Проверь запуск npm run dev. (${(e as Error).message ?? e})`
+          : "Сервер игры недоступен. Попробуй ещё раз чуть позже.";
       (ui.querySelector(".play") as HTMLButtonElement).disabled = false;
     }
   };

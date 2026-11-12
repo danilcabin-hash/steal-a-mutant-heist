@@ -273,6 +273,6 @@ export const CLOSE = {
 } as const;
 
 export function sanitizeName(raw: unknown): string {
-  const s = typeof raw === "string" ? raw.replace(/[^\w .-]/g, "").trim().slice(0, 16) : "";
-  return s || `Player${Math.floor(1000 + Math.random() * 9000)}`;
+  const s = typeof raw === "string" ? raw.normalize("NFC").replace(/[^\p{L}\p{N}_ .-]/gu, "").trim().slice(0, 16) : "";
+  return s || `Игрок${Math.floor(1000 + Math.random() * 9000)}`;
 }

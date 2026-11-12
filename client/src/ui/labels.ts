@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export const FONT = `"Fredoka", "Arial Rounded MT Bold", "Segoe UI", sans-serif`;
+export const FONT = `"Nunito", "Arial Rounded MT Bold", "Segoe UI", sans-serif`;
 
 export interface LabelLine {
   text: string;

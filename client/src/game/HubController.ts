@@ -59,9 +59,9 @@ export class HubController {
       if (dist < USE_RANGE - 1) {
         this.prompts.offer({
           key: "claim:potion",
-          title: "Potion",
+          title: "Зелье",
           titleColor: "#5dff3a",
-          action: "Claim (x2 Speed)",
+          action: "Забрать (скорость ×2)",
           at: new THREE.Vector3(s.x, 3, s.z),
           dist,
           holdSec: 0.25,
@@ -77,9 +77,9 @@ export class HubController {
       const next = max ? null : treadmillLevel(view.treadmillLevel + 1);
       this.prompts.offer({
         key: "up:treadmill",
-        title: max ? "Treadmill maxed!" : `Level ${view.treadmillLevel} > ${next!.level} · $${formatShort(next!.cost)}`,
+        title: max ? "Дорожка улучшена до предела" : `Уровень ${view.treadmillLevel} > ${next!.level} · $${formatShort(next!.cost)}`,
         titleColor: max || view.money >= next!.cost ? "#5dff3a" : "#ff6b6b",
-        action: max ? "MAX" : "Upgrade",
+        action: max ? "МАКС." : "Улучшить",
         at: new THREE.Vector3(plot.treadmillSign.x, 3.3, plot.treadmillSign.z),
         dist: tDist,
         holdSec: 0.4,
@@ -95,9 +95,9 @@ export class HubController {
       const next = PEN_LEVELS[view.penLevel];
       this.prompts.offer({
         key: "up:pen",
-        title: next ? `${next.name} · $${formatShort(next.cost)}` : "Pen maxed!",
+        title: next ? `${next.name} · $${formatShort(next.cost)}` : "Загон улучшен до предела",
         titleColor: !next || view.money >= next.cost ? "#5dff3a" : "#ff6b6b",
-        action: next ? "Upgrade Pen" : "MAX",
+        action: next ? "Улучшить загон" : "МАКС.",
         at: new THREE.Vector3(plot.penSign.x, 3.3, plot.penSign.z),
         dist: pDist,
         holdSec: 0.4,
@@ -113,9 +113,9 @@ export class HubController {
       if (dist < USE_RANGE - 1) {
         this.prompts.offer({
           key: "claim:chest",
-          title: readyIn <= 0 ? "Free Chest" : `Free Chest · ${formatDuration(readyIn)}`,
+          title: readyIn <= 0 ? "Бесплатный сундук" : `Бесплатный сундук · ${formatDuration(readyIn)}`,
           titleColor: readyIn <= 0 ? "#5dff3a" : "#ff6b6b",
-          action: readyIn <= 0 ? "Open" : "Not yet",
+          action: readyIn <= 0 ? "Открыть" : "Ещё рано",
           at: new THREE.Vector3(s.x, 3, s.z),
           dist,
           holdSec: 0.25,
@@ -126,9 +126,9 @@ export class HubController {
 
     // Stalls and machines open their menus.
     for (const [b, title, action, open] of [
-      [HUB_BUILDINGS.sell, "SELL", "Sell Pets & Eggs", "sell"],
-      [HUB_BUILDINGS.fuse, "Fuse Machine", "Fuse Pets", "fuse"],
-      [HUB_BUILDINGS.trails, "Trails Shop", "Browse Trails", "trails"],
+      [HUB_BUILDINGS.sell, "ПРОДАЖА", "Продать мутантов и капсулы", "sell"],
+      [HUB_BUILDINGS.fuse, "Аппарат слияния", "Объединить мутантов", "fuse"],
+      [HUB_BUILDINGS.trails, "Магазин следов", "Выбрать след", "trails"],
     ] as const) {
       const s = useSpot(b);
       const dist = d(s.x, s.z);
