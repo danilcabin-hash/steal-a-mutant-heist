@@ -117,7 +117,7 @@ function guardianHome(biomeId: string): { x: number; z: number } {
 const GUARDIAN_DEFS: GuardianDef[] = [
   {
     id: "forest_hen",
-    name: "Broody Hen",
+    name: "Тунг-Тунг Сахур",
     biome: "forest",
     home: guardianHome("forest"),
     chaseSpeed: 16,
