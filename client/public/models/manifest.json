@@ -97,7 +97,7 @@
     "scale": 1,
     "rotationY": 0,
     "offsetY": 0,
-    "note": "Forest guardian (Broody Hen), ~5 units tall, faces +Z. Name leg/wing bones LegL1/LegR1/ArmL1/ArmR1 (or Mixamo names) to get the walk animation."
+    "note": "Forest guardian: Tung Tung Sahur, faces +Z."
   },
   "guardian_lake": {
     "file": null,

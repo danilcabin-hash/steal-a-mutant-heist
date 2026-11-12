@@ -1,4 +1,8 @@
-# Egg Heist
+# Укради Мутанта! / Egg Heist
+
+Форк [Steal-some-eggs](https://github.com/buwanekamara/Steal-some-eggs). В стартовом лесу капсулы охраняет Сахур. В коллекцию первого биома добавлены Тунг-Тунг Сахур, Кот в тапке и Гусь на турбо. Внутренние идентификаторы сохранены для совместимости с инвентарём и рецептами.
+
+Для пробного запуска в облаке открой [GitHub Codespaces](https://codespaces.new/danilcabin-hash/steal-a-mutant-heist). После сборки открой порт 2567 во вкладке **Ports**. Для запуска на компьютере используй Node.js 24, затем выполни `npm ci`, `npm run build` и `npm start`. Игра откроется на [localhost:2567](http://localhost:2567/).
 
 A browser multiplayer egg-stealing simulator (Three.js + Colyseus).
 Plan: [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) · Reference notes: [REFERENCE_NOTES.md](REFERENCE_NOTES.md)

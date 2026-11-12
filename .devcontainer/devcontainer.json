@@ -1,0 +1,13 @@
+{
+  "name": "Укради Мутанта!",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
+  "forwardPorts": [2567],
+  "portsAttributes": {
+    "2567": {
+      "label": "Укради Мутанта!",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "npm ci && npm run build",
+  "postStartCommand": "bash -c 'NODE_ENV=production nohup npm start > /tmp/mutant-heist.log 2>&1 < /dev/null &'"
+}

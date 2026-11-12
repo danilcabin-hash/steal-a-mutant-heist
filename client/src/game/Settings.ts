@@ -29,13 +29,13 @@ export const QUALITY: Record<
 };
 
 const KEY = "egg.settings";
-const DEFAULTS: Settings = { graphics: "auto", sound: true };
+const DEFAULTS: Settings = { graphics: "low", sound: true };
 
 export function loadSettings(): Settings {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) ?? "{}") as Partial<Settings>;
     return {
-      graphics: raw.graphics === "high" || raw.graphics === "low" ? raw.graphics : "auto",
+      graphics: raw.graphics === "high" || raw.graphics === "low" || raw.graphics === "auto" ? raw.graphics : DEFAULTS.graphics,
       sound: raw.sound !== false,
     };
   } catch {

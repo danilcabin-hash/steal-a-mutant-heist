@@ -1,3 +1,4 @@
+import { createMeme } from "./memes.ts";
 import * as THREE from "three";
 import { EGG_BY_ID, PET_BY_ID } from "@egg/shared";
 import { blossomSpirit, golem, jaguar, shark, rex, scorpion, seraph, swan, titanGuardian, voidwatcher, yeti } from "./guardians.ts";
@@ -579,44 +580,11 @@ function trailsShop(): THREE.Object3D {
  * Forest guardian: a huge blocky hen (~5 units tall). Legs and wings are named like the player
  * rig ("LegL1", "ArmL1") so the procedural walk animation drives them.
  */
-function hen(): THREE.Object3D {
-  const g = new THREE.Group();
-  const white = mat("#f4f1ea", { roughness: 0.85 });
-  const orange = mat("#f39c12", { roughness: 0.6 });
-  const red = mat("#e0344a", { roughness: 0.6 });
-  const legGroup = (name: string, x: number) => {
-    const leg = new THREE.Group();
-    leg.name = name;
-    leg.position.set(x, 1.9, 0);
-    leg.add(box(0.35, 1.9, 0.35, orange, 0, -0.95, 0));
-    leg.add(box(0.9, 0.18, 1.1, orange, 0, -1.8, 0.25));
-    return leg;
-  };
-  g.add(legGroup("LegL1", 0.75), legGroup("LegR1", -0.75));
-  g.add(box(3, 2.6, 3.8, white, 0, 3.2, 0)); // body
-  g.add(box(2.2, 1.6, 1.2, white, 0, 3.8, -2.3)); // tail
-  g.add(box(1.6, 1.2, 0.6, white, 0, 4.9, -2.7));
-  const wing = (name: string, side: number) => {
-    const w = new THREE.Group();
-    w.name = name;
-    w.position.set(side * 1.55, 4.1, 0.2);
-    w.add(box(0.3, 1.8, 2.6, mat("#e6e1d6", { roughness: 0.85 }), side * 0.1, -0.8, 0));
-    return w;
-  };
-  g.add(wing("ArmL1", 1), wing("ArmR1", -1));
-  const head = new THREE.Group();
-  head.name = "Neck1";
-  head.position.set(0, 4.6, 1.6);
-  head.add(box(1.6, 1.8, 1.5, white, 0, 0.9, 0));
-  head.add(box(0.7, 0.45, 0.8, mat("#ffc21f"), 0, 0.9, 1.1)); // beak
-  head.add(box(0.35, 0.6, 0.3, red, 0, 0.35, 0.85)); // wattle
-  head.add(box(0.3, 0.55, 1.0, red, 0, 2.05, 0)); // comb
-  const eye = new THREE.MeshStandardMaterial({ color: "#111111", roughness: 0.3 });
-  head.add(box(0.12, 0.3, 0.3, eye, 0.81, 1.25, 0.35), box(0.12, 0.3, 0.3, eye, -0.81, 1.25, 0.35));
-  g.add(head);
-  return g;
+function sahurGuardian(): THREE.Object3D {
+  const model = createMeme(0, "#583225", "#f16c3f");
+  model.scale.setScalar(4);
+  return model;
 }
-
 /** Smooth egg shape (1 unit tall at size 1) with speckles in the egg's colors. */
 function egg(id: string): THREE.Object3D {
   const def = EGG_BY_ID.get(id.replace(/^egg_/, ""));
@@ -667,6 +635,12 @@ function pet(id: string): THREE.Object3D {
   const def = PET_BY_ID.get(id.replace(/^pet_/, ""));
   if (!def) return unknown();
   const [bodyC, accentC] = def.colors;
+  const memeIndex = ["forest_chick", "forest_bunny", "forest_piglet"].indexOf(def.id);
+  if (memeIndex >= 0) {
+    const model = createMeme(memeIndex, bodyC, accentC);
+    model.scale.setScalar(def.height / new THREE.Box3().setFromObject(model).max.y);
+    return model;
+  }
   const body = mat(bodyC, { roughness: 0.8 });
   const accent = mat(accentC, { roughness: 0.8 });
   const dark = new THREE.MeshStandardMaterial({ color: "#151515", roughness: 0.3 });
@@ -781,7 +755,7 @@ function pet(id: string): THREE.Object3D {
 }
 
 export const PLACEHOLDERS: Record<string, () => THREE.Object3D> = {
-  guardian_forest: withSoftStuds(hen),
+  guardian_forest: sahurGuardian,
   guardian_lake: swan,
   guardian_desert: scorpion,
   guardian_jungle: jaguar,

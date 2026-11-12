@@ -32,7 +32,7 @@ export interface EggDef {
 }
 
 export const EGGS: EggDef[] = [
-  { id: "forest_speckled", name: "Speckled Egg", biome: "forest", rarity: "Common", weight: 65, colors: ["#f3ead6", "#8a6a45"] },
+  { id: "forest_speckled", name: "Капсула мемов", biome: "forest", rarity: "Common", weight: 65, colors: ["#f3ead6", "#8a6a45"] },
   { id: "forest_mossy", name: "Mossy Egg", biome: "forest", rarity: "Uncommon", weight: 25, colors: ["#7ccf5a", "#3f8a2c"] },
   { id: "forest_acorn", name: "Acorn Egg", biome: "forest", rarity: "Rare", weight: 10, colors: ["#b8743a", "#5a3a1c"] },
   { id: "lake_pebble", name: "Pebble Egg", biome: "lake", rarity: "Common", weight: 65, colors: ["#dfe9ea", "#7d9096"] },

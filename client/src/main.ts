@@ -11,10 +11,9 @@ const params = new URLSearchParams(location.search);
 let libLoad: { lib: ModelLibrary; done: Promise<void>; progress: number } | null = null;
 
 if (params.has("viewer")) {
-  document.title = "Egg Heist — Model Viewer";
+  document.title = "Укради Мутанта! — Модели";
   import("./viewer/Viewer.ts").then((m) => m.startViewer(canvas, ui));
 } else {
-  bloxity.initBloxity(); // once, before anything else uses the SDK
   showStartScreen();
 }
 
@@ -49,16 +48,17 @@ function showStartScreen() {
   const saved = safeGet("egg.name") ?? "";
   ui.innerHTML = `
     <div class="start">
-      <h1>Egg Heist</h1>
-      <p class="sub">Guardians of the Wild</p>
-      <input class="name" maxlength="16" placeholder="Your name" value="${saved.replace(/"/g, "")}" />
+      <h1>Укради Мутанта!</h1>
+      <p class="sub">Унеси капсулу от Сахура и открой мема на базе</p>
+      <input class="name" maxlength="16" placeholder="Твоё имя" />
       <div class="bx-login"></div>
-      <button class="play big-btn shop">Play</button>
+      <button class="play big-btn shop">Играть</button>
       <div class="progress"><div class="bar"></div></div>
       <div class="err"></div>
       ${import.meta.env.DEV ? `<a class="viewer-link" href="?viewer">Open Model Viewer</a>` : ""}
     </div>`;
   const nameIn = ui.querySelector(".name") as HTMLInputElement;
+  nameIn.value = saved;
   const playBtn = ui.querySelector(".play") as HTMLButtonElement;
   const bar = ui.querySelector(".bar") as HTMLDivElement;
   const loginRow = ui.querySelector(".bx-login") as HTMLDivElement;

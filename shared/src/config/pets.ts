@@ -24,9 +24,9 @@ export interface PetDef {
 }
 
 export const PETS: PetDef[] = [
-  { id: "forest_chick", name: "Chick", biome: "forest", rarity: "Common", baseIncome: 1, baseWeight: 2, height: 1.8, colors: ["#ffe066", "#ff9f1c"], icon: "🐤", shape: "bird" },
-  { id: "forest_bunny", name: "Bunny", biome: "forest", rarity: "Common", baseIncome: 2, baseWeight: 1.5, height: 2.0, colors: ["#f2f2f2", "#ffb3c7"], icon: "🐰", shape: "quad" },
-  { id: "forest_piglet", name: "Piglet", biome: "forest", rarity: "Uncommon", baseIncome: 6, baseWeight: 5, height: 2.4, colors: ["#ff9ec4", "#e0608f"], icon: "🐷", shape: "quad" },
+  { id: "forest_chick", name: "Тунг-Тунг Сахур", biome: "forest", rarity: "Common", baseIncome: 1, baseWeight: 2, height: 1.8, colors: ["#9a502d", "#ffba67"], icon: "🪵", shape: "biped" },
+  { id: "forest_bunny", name: "Кот в тапке", biome: "forest", rarity: "Common", baseIncome: 2, baseWeight: 1.5, height: 2.0, colors: ["#7b66de", "#ffd58d"], icon: "🐈", shape: "quad" },
+  { id: "forest_piglet", name: "Гусь на турбо", biome: "forest", rarity: "Uncommon", baseIncome: 6, baseWeight: 5, height: 2.4, colors: ["#fff2d8", "#77e7cd"], icon: "🪿", shape: "bird" },
   { id: "forest_fox", name: "Fox", biome: "forest", rarity: "Uncommon", baseIncome: 12, baseWeight: 6, height: 2.8, colors: ["#f07b2a", "#ffffff"], icon: "🦊", shape: "quad" },
   { id: "forest_owl", name: "Burrowing Owl", biome: "forest", rarity: "Rare", baseIncome: 40, baseWeight: 3, height: 3.0, colors: ["#8a5a33", "#f2d49b"], icon: "🦉", shape: "bird" },
   { id: "forest_bear", name: "Bear", biome: "forest", rarity: "Epic", baseIncome: 250, baseWeight: 40, height: 4.8, colors: ["#7a4a24", "#c49a6c"], icon: "🐻", shape: "biped" },
